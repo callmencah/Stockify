@@ -34,7 +34,7 @@ const navItems = [
     exact: false,
   },
   {
-    title: "Barang (Item)",
+    title: "Barang",
     href: "/items",
     icon: Package,
     roles: ["ADMIN", "MANAGER", "STAFF", "VIEWER"],
