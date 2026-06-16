@@ -1,0 +1,3701 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Stockify — Dokumentasi & User Guide</title>
+        <style>
+            /* ============================================================
+       RESET & BASE
+    ============================================================ */
+            *,
+            *::before,
+            *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            :root {
+                --blue: #2563eb;
+                --blue-dark: #1d4ed8;
+                --blue-light: #dbeafe;
+                --blue-50: #eff6ff;
+                --gray-50: #f9fafb;
+                --gray-100: #f3f4f6;
+                --gray-200: #e5e7eb;
+                --gray-300: #d1d5db;
+                --gray-400: #9ca3af;
+                --gray-500: #6b7280;
+                --gray-600: #4b5563;
+                --gray-700: #374151;
+                --gray-800: #1f2937;
+                --gray-900: #111827;
+                --green: #059669;
+                --green-light: #d1fae5;
+                --amber: #d97706;
+                --amber-light: #fef3c7;
+                --red: #dc2626;
+                --red-light: #fee2e2;
+                --purple: #7c3aed;
+                --purple-light: #ede9fe;
+                --sidebar-w: 280px;
+                --header-h: 64px;
+                --radius: 10px;
+                --shadow:
+                    0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+                --shadow-md:
+                    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                --shadow-lg:
+                    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+                    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                font-family:
+                    "Segoe UI",
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
+                font-size: 15px;
+                line-height: 1.65;
+                color: var(--gray-700);
+                background: var(--gray-50);
+            }
+            a {
+                color: var(--blue);
+                text-decoration: none;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            h1,
+            h2,
+            h3,
+            h4,
+            h5 {
+                color: var(--gray-900);
+                font-weight: 700;
+                line-height: 1.3;
+            }
+            img {
+                max-width: 100%;
+            }
+            code {
+                font-family:
+                    "Cascadia Code", "Fira Code", "Consolas", monospace;
+                font-size: 0.85em;
+                background: var(--gray-100);
+                padding: 2px 6px;
+                border-radius: 4px;
+                color: var(--gray-800);
+            }
+            pre {
+                background: var(--gray-900);
+                color: #e5e7eb;
+                border-radius: var(--radius);
+                padding: 1.25rem 1.5rem;
+                overflow-x: auto;
+                font-size: 0.875rem;
+                line-height: 1.7;
+                margin: 1rem 0;
+            }
+            pre code {
+                background: none;
+                padding: 0;
+                color: inherit;
+                font-size: inherit;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 0.9rem;
+            }
+            th {
+                background: var(--gray-800);
+                color: #fff;
+                text-align: left;
+                padding: 0.65rem 1rem;
+                font-weight: 600;
+            }
+            td {
+                padding: 0.6rem 1rem;
+                border-bottom: 1px solid var(--gray-200);
+            }
+            tr:last-child td {
+                border-bottom: none;
+            }
+            tr:nth-child(even) {
+                background: var(--gray-50);
+            }
+            ul,
+            ol {
+                padding-left: 1.5rem;
+            }
+            li {
+                margin-bottom: 0.35rem;
+            }
+
+            /* ============================================================
+       TOP NAV
+    ============================================================ */
+            .topnav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 100;
+                height: var(--header-h);
+                background: #fff;
+                border-bottom: 1px solid var(--gray-200);
+                display: flex;
+                align-items: center;
+                padding: 0 1.5rem;
+                gap: 1rem;
+                box-shadow: var(--shadow);
+            }
+            .topnav-brand {
+                display: flex;
+                align-items: center;
+                gap: 0.65rem;
+                font-weight: 800;
+                font-size: 1.1rem;
+                color: var(--gray-900);
+            }
+            .topnav-brand .logo-box {
+                width: 34px;
+                height: 34px;
+                border-radius: 8px;
+                background: var(--blue);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.1rem;
+                color: #fff;
+                flex-shrink: 0;
+            }
+            .topnav-badge {
+                font-size: 0.7rem;
+                background: var(--blue-light);
+                color: var(--blue);
+                padding: 2px 8px;
+                border-radius: 99px;
+                font-weight: 600;
+            }
+            .topnav-spacer {
+                flex: 1;
+            }
+            .topnav-links {
+                display: flex;
+                gap: 0.5rem;
+            }
+            .topnav-links a {
+                font-size: 0.85rem;
+                color: var(--gray-500);
+                padding: 0.4rem 0.75rem;
+                border-radius: 6px;
+                font-weight: 500;
+            }
+            .topnav-links a:hover {
+                background: var(--gray-100);
+                color: var(--gray-900);
+                text-decoration: none;
+            }
+            .btn-primary {
+                background: var(--blue);
+                color: #fff;
+                border: none;
+                padding: 0.45rem 1.1rem;
+                border-radius: 8px;
+                font-weight: 600;
+                font-size: 0.85rem;
+                cursor: pointer;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.4rem;
+                text-decoration: none;
+            }
+            .btn-primary:hover {
+                background: var(--blue-dark);
+                text-decoration: none;
+                color: #fff;
+            }
+
+            /* ============================================================
+       LAYOUT
+    ============================================================ */
+            .layout {
+                display: flex;
+                padding-top: var(--header-h);
+                min-height: 100vh;
+            }
+
+            /* ============================================================
+       SIDEBAR
+    ============================================================ */
+            .sidebar {
+                position: fixed;
+                top: var(--header-h);
+                left: 0;
+                bottom: 0;
+                width: var(--sidebar-w);
+                background: #fff;
+                border-right: 1px solid var(--gray-200);
+                overflow-y: auto;
+                padding: 1.25rem 0;
+                z-index: 50;
+            }
+            .sidebar-section-label {
+                font-size: 0.7rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                color: var(--gray-400);
+                padding: 0.75rem 1.25rem 0.35rem;
+            }
+            .sidebar a {
+                display: flex;
+                align-items: center;
+                gap: 0.65rem;
+                padding: 0.5rem 1.25rem;
+                font-size: 0.875rem;
+                color: var(--gray-600);
+                border-radius: 0;
+                font-weight: 500;
+                transition:
+                    background 0.15s,
+                    color 0.15s;
+            }
+            .sidebar a:hover {
+                background: var(--gray-50);
+                color: var(--gray-900);
+                text-decoration: none;
+            }
+            .sidebar a.active {
+                background: var(--blue-50);
+                color: var(--blue);
+                font-weight: 600;
+                border-right: 3px solid var(--blue);
+            }
+            .sidebar a .icon {
+                font-size: 1rem;
+                opacity: 0.7;
+                width: 18px;
+                text-align: center;
+            }
+
+            /* ============================================================
+       CONTENT
+    ============================================================ */
+            .content {
+                margin-left: var(--sidebar-w);
+                flex: 1;
+                min-width: 0;
+            }
+
+            /* ============================================================
+       HERO
+    ============================================================ */
+            .hero {
+                background: linear-gradient(
+                    135deg,
+                    #1e3a8a 0%,
+                    #2563eb 50%,
+                    #3b82f6 100%
+                );
+                padding: 4rem 3rem;
+                color: #fff;
+            }
+            .hero-inner {
+                max-width: 800px;
+            }
+            .hero-tag {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: rgba(255, 255, 255, 0.15);
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                padding: 0.3rem 0.9rem;
+                border-radius: 99px;
+                font-size: 0.8rem;
+                font-weight: 600;
+                margin-bottom: 1.25rem;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+                color: #fff;
+                margin-bottom: 0.75rem;
+            }
+            .hero p {
+                font-size: 1.1rem;
+                opacity: 0.85;
+                max-width: 600px;
+                margin-bottom: 2rem;
+            }
+            .hero-stats {
+                display: flex;
+                gap: 2.5rem;
+                flex-wrap: wrap;
+            }
+            .hero-stat-val {
+                font-size: 1.8rem;
+                font-weight: 800;
+            }
+            .hero-stat-label {
+                font-size: 0.8rem;
+                opacity: 0.7;
+            }
+
+            /* ============================================================
+       SECTION
+    ============================================================ */
+            .section {
+                padding: 3rem;
+                border-bottom: 1px solid var(--gray-100);
+            }
+            .section-title {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+            }
+            .section-title .icon {
+                font-size: 1.3rem;
+            }
+            .section-subtitle {
+                color: var(--gray-500);
+                margin-bottom: 2rem;
+                font-size: 0.95rem;
+            }
+            .section-anchor {
+                scroll-margin-top: calc(var(--header-h) + 1rem);
+            }
+
+            /* ============================================================
+       CARDS
+    ============================================================ */
+            .card {
+                background: #fff;
+                border: 1px solid var(--gray-200);
+                border-radius: var(--radius);
+                padding: 1.5rem;
+                box-shadow: var(--shadow);
+            }
+            .card-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                gap: 1.25rem;
+                margin-top: 1.5rem;
+            }
+            .feature-card {
+                background: #fff;
+                border: 1px solid var(--gray-200);
+                border-radius: var(--radius);
+                padding: 1.5rem;
+                box-shadow: var(--shadow);
+                transition:
+                    box-shadow 0.2s,
+                    transform 0.2s;
+            }
+            .feature-card:hover {
+                box-shadow: var(--shadow-md);
+                transform: translateY(-2px);
+            }
+            .feature-card .icon-wrap {
+                width: 44px;
+                height: 44px;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.4rem;
+                margin-bottom: 1rem;
+            }
+            .feature-card h3 {
+                font-size: 1rem;
+                margin-bottom: 0.4rem;
+            }
+            .feature-card p {
+                font-size: 0.875rem;
+                color: var(--gray-500);
+                line-height: 1.6;
+            }
+
+            /* Color variants */
+            .bg-blue {
+                background: var(--blue-light);
+            }
+            .bg-green {
+                background: var(--green-light);
+            }
+            .bg-amber {
+                background: var(--amber-light);
+            }
+            .bg-red {
+                background: var(--red-light);
+            }
+            .bg-purple {
+                background: var(--purple-light);
+            }
+            .bg-gray {
+                background: var(--gray-100);
+            }
+
+            /* ============================================================
+       STEPS
+    ============================================================ */
+            .steps {
+                margin-top: 1.5rem;
+            }
+            .step {
+                display: flex;
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+                align-items: flex-start;
+            }
+            .step-num {
+                flex-shrink: 0;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: var(--blue);
+                color: #fff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                font-size: 0.9rem;
+                margin-top: 2px;
+            }
+            .step-content h4 {
+                font-size: 0.95rem;
+                margin-bottom: 0.25rem;
+            }
+            .step-content p,
+            .step-content ul {
+                font-size: 0.875rem;
+                color: var(--gray-600);
+            }
+
+            /* ============================================================
+       BADGE
+    ============================================================ */
+            .badge {
+                display: inline-flex;
+                align-items: center;
+                padding: 0.2rem 0.65rem;
+                border-radius: 99px;
+                font-size: 0.75rem;
+                font-weight: 600;
+            }
+            .badge-blue {
+                background: var(--blue-light);
+                color: var(--blue);
+            }
+            .badge-green {
+                background: var(--green-light);
+                color: var(--green);
+            }
+            .badge-amber {
+                background: var(--amber-light);
+                color: var(--amber);
+            }
+            .badge-red {
+                background: var(--red-light);
+                color: var(--red);
+            }
+            .badge-purple {
+                background: var(--purple-light);
+                color: var(--purple);
+            }
+            .badge-gray {
+                background: var(--gray-100);
+                color: var(--gray-600);
+            }
+
+            /* ============================================================
+       ALERT BOX
+    ============================================================ */
+            .alert {
+                display: flex;
+                gap: 0.75rem;
+                align-items: flex-start;
+                padding: 1rem 1.25rem;
+                border-radius: var(--radius);
+                margin: 1.25rem 0;
+                font-size: 0.9rem;
+                line-height: 1.6;
+            }
+            .alert .alert-icon {
+                font-size: 1.1rem;
+                flex-shrink: 0;
+                margin-top: 1px;
+            }
+            .alert-info {
+                background: var(--blue-50);
+                border-left: 4px solid var(--blue);
+            }
+            .alert-success {
+                background: var(--green-light);
+                border-left: 4px solid var(--green);
+            }
+            .alert-warning {
+                background: var(--amber-light);
+                border-left: 4px solid var(--amber);
+            }
+            .alert-danger {
+                background: var(--red-light);
+                border-left: 4px solid var(--red);
+            }
+
+            /* ============================================================
+       SCREENSHOT MOCK
+    ============================================================ */
+            .screen-mock {
+                border: 1px solid var(--gray-200);
+                border-radius: var(--radius);
+                overflow: hidden;
+                box-shadow: var(--shadow-md);
+                margin: 1.5rem 0;
+            }
+            .screen-mock-bar {
+                background: var(--gray-800);
+                padding: 0.6rem 1rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .screen-mock-dot {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+            }
+            .screen-mock-body {
+                background: #fff;
+            }
+
+            /* Mock UI elements */
+            .mock-sidebar {
+                width: 220px;
+                background: var(--gray-900);
+                height: 100%;
+                padding: 1rem 0;
+                display: flex;
+                flex-direction: column;
+                gap: 0.25rem;
+                flex-shrink: 0;
+            }
+            .mock-sidebar-item {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+                color: #9ca3af;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                border-radius: 4px;
+                margin: 0 0.5rem;
+            }
+            .mock-sidebar-item.active {
+                background: #2563eb;
+                color: #fff;
+            }
+            .mock-main {
+                flex: 1;
+                padding: 1.5rem;
+                min-height: 200px;
+            }
+            .mock-row {
+                display: flex;
+                gap: 1rem;
+                height: 200px;
+            }
+
+            /* ============================================================
+       KEYBOARD
+    ============================================================ */
+            kbd {
+                display: inline-flex;
+                align-items: center;
+                background: var(--gray-100);
+                border: 1px solid var(--gray-300);
+                border-radius: 4px;
+                padding: 0.1rem 0.4rem;
+                font-size: 0.8rem;
+                font-family: inherit;
+                color: var(--gray-700);
+                box-shadow: 0 1px 0 var(--gray-300);
+            }
+
+            /* ============================================================
+       TABLE WRAPPER
+    ============================================================ */
+            .table-wrap {
+                border: 1px solid var(--gray-200);
+                border-radius: var(--radius);
+                overflow: hidden;
+                margin: 1.25rem 0;
+                box-shadow: var(--shadow);
+            }
+
+            /* ============================================================
+       ROLE GRID
+    ============================================================ */
+            .role-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1rem;
+                margin-top: 1.5rem;
+            }
+            .role-card {
+                border-radius: var(--radius);
+                padding: 1.25rem;
+                border: 2px solid transparent;
+            }
+            .role-card h4 {
+                font-size: 0.95rem;
+                margin-bottom: 0.5rem;
+            }
+            .role-card ul {
+                font-size: 0.8rem;
+                padding-left: 1.1rem;
+            }
+            .role-card li {
+                margin-bottom: 0.2rem;
+                color: var(--gray-600);
+            }
+
+            /* ============================================================
+       TIMELINE
+    ============================================================ */
+            .timeline {
+                margin-top: 1.5rem;
+            }
+            .timeline-item {
+                display: flex;
+                gap: 1rem;
+                margin-bottom: 1.25rem;
+            }
+            .timeline-line {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                flex-shrink: 0;
+            }
+            .timeline-dot {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background: var(--blue);
+                flex-shrink: 0;
+                margin-top: 5px;
+            }
+            .timeline-bar {
+                width: 2px;
+                flex: 1;
+                background: var(--gray-200);
+                margin-top: 4px;
+            }
+            .timeline-item:last-child .timeline-bar {
+                display: none;
+            }
+            .timeline-content {
+                padding-bottom: 0.5rem;
+            }
+            .timeline-content h4 {
+                font-size: 0.9rem;
+                margin-bottom: 0.2rem;
+            }
+            .timeline-content p {
+                font-size: 0.85rem;
+                color: var(--gray-500);
+            }
+
+            /* ============================================================
+       API TABLE
+    ============================================================ */
+            .method {
+                display: inline-block;
+                padding: 0.15rem 0.5rem;
+                border-radius: 4px;
+                font-size: 0.75rem;
+                font-weight: 700;
+                font-family: monospace;
+            }
+            .method-get {
+                background: #d1fae5;
+                color: #065f46;
+            }
+            .method-post {
+                background: #dbeafe;
+                color: #1e40af;
+            }
+            .method-put {
+                background: #fef3c7;
+                color: #92400e;
+            }
+            .method-delete {
+                background: #fee2e2;
+                color: #991b1b;
+            }
+            .method-patch {
+                background: var(--purple-light);
+                color: var(--purple);
+            }
+
+            /* ============================================================
+       FOOTER
+    ============================================================ */
+            .footer {
+                background: var(--gray-900);
+                color: var(--gray-400);
+                padding: 2.5rem 3rem;
+                margin-left: var(--sidebar-w);
+                text-align: center;
+                font-size: 0.875rem;
+            }
+            .footer strong {
+                color: #fff;
+            }
+
+            /* ============================================================
+       SCROLL PROGRESS
+    ============================================================ */
+            #progress-bar {
+                position: fixed;
+                top: var(--header-h);
+                left: 0;
+                height: 3px;
+                background: var(--blue);
+                z-index: 200;
+                width: 0%;
+                transition: width 0.1s linear;
+            }
+
+            /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+            @media (max-width: 900px) {
+                .sidebar {
+                    display: none;
+                }
+                .content,
+                .footer {
+                    margin-left: 0;
+                }
+                .section {
+                    padding: 2rem 1.25rem;
+                }
+                .role-grid {
+                    grid-template-columns: 1fr 1fr;
+                }
+                .hero {
+                    padding: 2.5rem 1.25rem;
+                }
+                .hero h1 {
+                    font-size: 1.8rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Scroll Progress -->
+        <div id="progress-bar"></div>
+
+        <!-- ============================================================
+     TOP NAV
+============================================================ -->
+        <nav class="topnav">
+            <div class="topnav-brand">
+                <div class="logo-box">📦</div>
+                Stockify
+                <span class="topnav-badge">v1.0</span>
+            </div>
+            <div class="topnav-spacer"></div>
+            <div class="topnav-links">
+                <a href="#mulai-cepat">Mulai Cepat</a>
+                <a href="#tentang">Fitur</a>
+                <a href="#dashboard">Panduan</a>
+                <a href="#api">API</a>
+                <a href="#faq">FAQ</a>
+            </div>
+            <a href="/" class="btn-primary">🚀 Buka Aplikasi</a>
+        </nav>
+
+        <div class="layout">
+            <!-- ============================================================
+       SIDEBAR
+  ============================================================ -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-section-label">Pengenalan</div>
+                <a href="#tentang" class="active"
+                    ><span class="icon">ℹ️</span> Tentang Stockify</a
+                >
+                <a href="#mulai-cepat"
+                    ><span class="icon">⚡</span> Mulai Cepat</a
+                >
+                <a href="#akun-demo"><span class="icon">🔑</span> Akun Demo</a>
+                <a href="#role"
+                    ><span class="icon">👥</span> Role & Hak Akses</a
+                >
+
+                <div class="sidebar-section-label">Fitur Utama</div>
+                <a href="#dashboard"><span class="icon">📊</span> Dashboard</a>
+                <a href="#master-barang"
+                    ><span class="icon">📦</span> Master Barang</a
+                >
+                <a href="#inventori"
+                    ><span class="icon">🏪</span> Inventori & Stok</a
+                >
+                <a href="#transfer-stok"
+                    ><span class="icon">🔄</span> Transfer Stok</a
+                >
+                <a href="#purchase-order"
+                    ><span class="icon">🚚</span> Purchase Order</a
+                >
+                <a href="#sales-order"
+                    ><span class="icon">🛒</span> Sales Order</a
+                >
+                <a href="#stock-opname"
+                    ><span class="icon">📋</span> Stock Opname</a
+                >
+                <a href="#laporan"
+                    ><span class="icon">📈</span> Laporan & Analitik</a
+                >
+
+                <div class="sidebar-section-label">Manajemen</div>
+                <a href="#lokasi"
+                    ><span class="icon">📍</span> Lokasi & Gudang</a
+                >
+                <a href="#supplier"><span class="icon">🏭</span> Supplier</a>
+                <a href="#customer"><span class="icon">👤</span> Customer</a>
+                <a href="#pengguna"
+                    ><span class="icon">🔐</span> Pengguna & Akses</a
+                >
+
+                <div class="sidebar-section-label">Referensi</div>
+                <a href="#api"><span class="icon">🔌</span> REST API</a>
+                <a href="#notifikasi"
+                    ><span class="icon">🔔</span> Notifikasi</a
+                >
+                <a href="#audit-trail"
+                    ><span class="icon">🕵️</span> Audit Trail</a
+                >
+                <a href="#faq"><span class="icon">❓</span> FAQ</a>
+                <a href="#tips"><span class="icon">💡</span> Tips & Trik</a>
+            </aside>
+
+            <!-- ============================================================
+       MAIN CONTENT
+  ============================================================ -->
+            <main class="content">
+                <!-- HERO -->
+                <section class="hero">
+                    <div class="hero-inner">
+                        <div class="hero-tag">📚 Dokumentasi Lengkap</div>
+                        <h1>Stockify User Guide</h1>
+                        <p>
+                            Panduan lengkap penggunaan sistem manajemen
+                            inventori Stockify — dari setup awal hingga fitur
+                            lanjutan.
+                        </p>
+                        <div class="hero-stats">
+                            <div>
+                                <div class="hero-stat-val">12+</div>
+                                <div class="hero-stat-label">Modul Fitur</div>
+                            </div>
+                            <div>
+                                <div class="hero-stat-val">17</div>
+                                <div class="hero-stat-label">
+                                    REST API Endpoints
+                                </div>
+                            </div>
+                            <div>
+                                <div class="hero-stat-val">4</div>
+                                <div class="hero-stat-label">Level Akses</div>
+                            </div>
+                            <div>
+                                <div class="hero-stat-val">∞</div>
+                                <div class="hero-stat-label">Multi Gudang</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+         TENTANG
+    ============================================================ -->
+                <section class="section section-anchor" id="tentang">
+                    <h2 class="section-title">
+                        <span class="icon">ℹ️</span> Tentang Stockify
+                    </h2>
+                    <p class="section-subtitle">
+                        Sistem manajemen inventori modern berbasis web
+                    </p>
+
+                    <p>
+                        Stockify adalah aplikasi manajemen inventori berbasis
+                        web yang memungkinkan bisnis Anda untuk memantau stok
+                        secara <strong>real-time</strong>, mengelola beberapa
+                        gudang sekaligus, dan mengintegrasikan alur pembelian
+                        serta penjualan dalam satu platform.
+                    </p>
+
+                    <div class="card-grid" style="margin-top: 1.5rem">
+                        <div class="feature-card">
+                            <div class="icon-wrap bg-blue">📊</div>
+                            <h3>Real-time Tracking</h3>
+                            <p>
+                                Stok diperbarui secara instan setiap kali ada
+                                transaksi masuk atau keluar.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon-wrap bg-green">🏪</div>
+                            <h3>Multi Gudang</h3>
+                            <p>
+                                Kelola stok di beberapa gudang dan toko secara
+                                bersamaan dari satu dashboard.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon-wrap bg-amber">📱</div>
+                            <h3>Mobile Friendly</h3>
+                            <p>
+                                Akses penuh dari smartphone. Tampilan responsif
+                                untuk semua ukuran layar.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon-wrap bg-red">🔒</div>
+                            <h3>Role-based Access</h3>
+                            <p>
+                                Kontrol akses berbasis peran: Admin, Manager,
+                                Staff, dan Viewer.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon-wrap bg-purple">📈</div>
+                            <h3>Laporan Lengkap</h3>
+                            <p>
+                                Nilai stok, riwayat transaksi, penjualan, dan
+                                audit trail lengkap.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon-wrap bg-gray">🔔</div>
+                            <h3>Alert Otomatis</h3>
+                            <p>
+                                Notifikasi otomatis saat stok mendekati reorder
+                                point yang ditentukan.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info" style="margin-top: 2rem">
+                        <span class="alert-icon">💡</span>
+                        <div>
+                            <strong>Tech Stack:</strong> Next.js 16 · TypeScript
+                            · Prisma ORM · SQLite/PostgreSQL · NextAuth.js ·
+                            Tailwind CSS · TanStack Query · Recharts
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+         MULAI CEPAT
+    ============================================================ -->
+                <section class="section section-anchor" id="mulai-cepat">
+                    <h2 class="section-title">
+                        <span class="icon">⚡</span> Mulai Cepat
+                    </h2>
+                    <p class="section-subtitle">
+                        Jalankan Stockify dalam hitungan menit
+                    </p>
+
+                    <div class="alert alert-warning">
+                        <span class="alert-icon">⚠️</span>
+                        <div>
+                            Pastikan <strong>Node.js 18+</strong> sudah
+                            terinstall di komputer Anda sebelum memulai.
+                        </div>
+                    </div>
+
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <h4>Install Dependencies</h4>
+                                <p>
+                                    Buka terminal di folder project Stockify,
+                                    lalu jalankan:
+                                </p>
+                                <pre><code>npm install</code></pre>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <h4>Setup Database</h4>
+                                <p>Buat dan sinkronkan skema database:</p>
+                                <pre><code>npm run db:push</code></pre>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <h4>Isi Data Demo</h4>
+                                <p>
+                                    Masukkan data contoh (barang, gudang,
+                                    supplier, user):
+                                </p>
+                                <pre><code>npm run db:seed</code></pre>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">4</div>
+                            <div class="step-content">
+                                <h4>Jalankan Server</h4>
+                                <p>
+                                    Start development server dan biarkan
+                                    terminal tetap terbuka:
+                                </p>
+                                <pre><code>npm run dev</code></pre>
+                                <p>
+                                    Tunggu sampai muncul:
+                                    <code>✓ Ready in ~500ms</code>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">5</div>
+                            <div class="step-content">
+                                <h4>Buka di Browser</h4>
+                                <p>
+                                    Akses aplikasi di:
+                                    <a
+                                        href="http://localhost:3000"
+                                        target="_blank"
+                                        ><strong
+                                            >http://localhost:3000</strong
+                                        ></a
+                                    >
+                                </p>
+                                <p>
+                                    Anda akan diarahkan ke halaman login secara
+                                    otomatis.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 2rem; margin-bottom: 0.75rem">
+                        Perintah Berguna
+                    </h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Perintah</th>
+                                    <th>Fungsi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>npm run dev</code></td>
+                                    <td>Jalankan server development</td>
+                                </tr>
+                                <tr>
+                                    <td><code>npm run build</code></td>
+                                    <td>Build untuk production</td>
+                                </tr>
+                                <tr>
+                                    <td><code>npm run start</code></td>
+                                    <td>Jalankan server production</td>
+                                </tr>
+                                <tr>
+                                    <td><code>npm run db:push</code></td>
+                                    <td>Sinkronkan skema Prisma ke database</td>
+                                </tr>
+                                <tr>
+                                    <td><code>npm run db:studio</code></td>
+                                    <td>Buka Prisma Studio (GUI database)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>npm run db:seed</code></td>
+                                    <td>Isi database dengan data demo</td>
+                                </tr>
+                                <tr>
+                                    <td><code>npm run db:generate</code></td>
+                                    <td>Generate ulang Prisma Client</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+         AKUN DEMO
+    ============================================================ -->
+                <section class="section section-anchor" id="akun-demo">
+                    <h2 class="section-title">
+                        <span class="icon">🔑</span> Akun Demo
+                    </h2>
+                    <p class="section-subtitle">
+                        Tiga akun tersedia untuk mencoba semua fitur
+                    </p>
+
+                    <div class="card-grid">
+                        <div
+                            class="card"
+                            style="border-top: 3px solid var(--red)"
+                        >
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 0.75rem;
+                                    margin-bottom: 1rem;
+                                "
+                            >
+                                <div
+                                    style="
+                                        width: 40px;
+                                        height: 40px;
+                                        border-radius: 50%;
+                                        background: #fee2e2;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        font-size: 1.3rem;
+                                    "
+                                >
+                                    👑
+                                </div>
+                                <div>
+                                    <div style="font-weight: 700">
+                                        Administrator
+                                    </div>
+                                    <span class="badge badge-red">ADMIN</span>
+                                </div>
+                            </div>
+                            <p
+                                style="
+                                    font-size: 0.85rem;
+                                    color: var(--gray-500);
+                                    margin-bottom: 0.75rem;
+                                "
+                            >
+                                Akses penuh ke semua fitur dan pengaturan
+                                sistem.
+                            </p>
+                            <div
+                                style="
+                                    background: var(--gray-50);
+                                    border-radius: 8px;
+                                    padding: 0.75rem;
+                                    font-size: 0.85rem;
+                                "
+                            >
+                                <div
+                                    style="
+                                        display: flex;
+                                        justify-content: space-between;
+                                        margin-bottom: 0.3rem;
+                                    "
+                                >
+                                    <span style="color: var(--gray-500)"
+                                        >Email</span
+                                    ><code>admin@stockify.com</code>
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        justify-content: space-between;
+                                    "
+                                >
+                                    <span style="color: var(--gray-500)"
+                                        >Password</span
+                                    ><code>admin123</code>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="card"
+                            style="border-top: 3px solid var(--blue)"
+                        >
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 0.75rem;
+                                    margin-bottom: 1rem;
+                                "
+                            >
+                                <div
+                                    style="
+                                        width: 40px;
+                                        height: 40px;
+                                        border-radius: 50%;
+                                        background: var(--blue-light);
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        font-size: 1.3rem;
+                                    "
+                                >
+                                    🎯
+                                </div>
+                                <div>
+                                    <div style="font-weight: 700">Manager</div>
+                                    <span class="badge badge-blue"
+                                        >MANAGER</span
+                                    >
+                                </div>
+                            </div>
+                            <p
+                                style="
+                                    font-size: 0.85rem;
+                                    color: var(--gray-500);
+                                    margin-bottom: 0.75rem;
+                                "
+                            >
+                                Akses ke semua operasional kecuali manajemen
+                                pengguna.
+                            </p>
+                            <div
+                                style="
+                                    background: var(--gray-50);
+                                    border-radius: 8px;
+                                    padding: 0.75rem;
+                                    font-size: 0.85rem;
+                                "
+                            >
+                                <div
+                                    style="
+                                        display: flex;
+                                        justify-content: space-between;
+                                        margin-bottom: 0.3rem;
+                                    "
+                                >
+                                    <span style="color: var(--gray-500)"
+                                        >Email</span
+                                    ><code>manager@stockify.com</code>
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        justify-content: space-between;
+                                    "
+                                >
+                                    <span style="color: var(--gray-500)"
+                                        >Password</span
+                                    ><code>manager123</code>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="card"
+                            style="border-top: 3px solid var(--green)"
+                        >
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 0.75rem;
+                                    margin-bottom: 1rem;
+                                "
+                            >
+                                <div
+                                    style="
+                                        width: 40px;
+                                        height: 40px;
+                                        border-radius: 50%;
+                                        background: var(--green-light);
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        font-size: 1.3rem;
+                                    "
+                                >
+                                    ⚙️
+                                </div>
+                                <div>
+                                    <div style="font-weight: 700">
+                                        Staff Gudang
+                                    </div>
+                                    <span class="badge badge-green">STAFF</span>
+                                </div>
+                            </div>
+                            <p
+                                style="
+                                    font-size: 0.85rem;
+                                    color: var(--gray-500);
+                                    margin-bottom: 0.75rem;
+                                "
+                            >
+                                Operasi harian: input stok, PO, SO, opname.
+                            </p>
+                            <div
+                                style="
+                                    background: var(--gray-50);
+                                    border-radius: 8px;
+                                    padding: 0.75rem;
+                                    font-size: 0.85rem;
+                                "
+                            >
+                                <div
+                                    style="
+                                        display: flex;
+                                        justify-content: space-between;
+                                        margin-bottom: 0.3rem;
+                                    "
+                                >
+                                    <span style="color: var(--gray-500)"
+                                        >Email</span
+                                    ><code>staff@stockify.com</code>
+                                </div>
+                                <div
+                                    style="
+                                        display: flex;
+                                        justify-content: space-between;
+                                    "
+                                >
+                                    <span style="color: var(--gray-500)"
+                                        >Password</span
+                                    ><code>staff123</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+         ROLE & HAK AKSES
+    ============================================================ -->
+                <section class="section section-anchor" id="role">
+                    <h2 class="section-title">
+                        <span class="icon">👥</span> Role & Hak Akses
+                    </h2>
+                    <p class="section-subtitle">
+                        Empat level akses untuk keamanan data yang terstruktur
+                    </p>
+
+                    <div class="role-grid">
+                        <div
+                            class="role-card"
+                            style="background: #fff5f5; border-color: #fca5a5"
+                        >
+                            <span
+                                class="badge badge-red"
+                                style="margin-bottom: 0.75rem"
+                                >ADMIN</span
+                            >
+                            <h4>Administrator</h4>
+                            <ul>
+                                <li>Akses penuh ✦</li>
+                                <li>Kelola user & role</li>
+                                <li>Semua laporan</li>
+                                <li>Audit trail</li>
+                                <li>Konfigurasi sistem</li>
+                            </ul>
+                        </div>
+                        <div
+                            class="role-card"
+                            style="background: #eff6ff; border-color: #93c5fd"
+                        >
+                            <span
+                                class="badge badge-blue"
+                                style="margin-bottom: 0.75rem"
+                                >MANAGER</span
+                            >
+                            <h4>Manager</h4>
+                            <ul>
+                                <li>Kelola barang</li>
+                                <li>PO & SO</li>
+                                <li>Stock opname</li>
+                                <li>Semua laporan</li>
+                                <li>Kelola lokasi</li>
+                            </ul>
+                        </div>
+                        <div
+                            class="role-card"
+                            style="background: #f0fdf4; border-color: #86efac"
+                        >
+                            <span
+                                class="badge badge-green"
+                                style="margin-bottom: 0.75rem"
+                                >STAFF</span
+                            >
+                            <h4>Staff</h4>
+                            <ul>
+                                <li>Input transaksi</li>
+                                <li>Buat PO & SO</li>
+                                <li>Stock opname</li>
+                                <li>Transfer stok</li>
+                                <li>Lihat inventori</li>
+                            </ul>
+                        </div>
+                        <div
+                            class="role-card"
+                            style="background: #fafafa; border-color: #d1d5db"
+                        >
+                            <span
+                                class="badge badge-gray"
+                                style="margin-bottom: 0.75rem"
+                                >VIEWER</span
+                            >
+                            <h4>Viewer</h4>
+                            <ul>
+                                <li>Lihat inventori</li>
+                                <li>Lihat laporan</li>
+                                <li>Lihat barang</li>
+                                <li>Read-only</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 2rem; margin-bottom: 0.75rem">
+                        Matriks Izin Lengkap
+                    </h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Fitur / Aksi</th>
+                                    <th>Admin</th>
+                                    <th>Manager</th>
+                                    <th>Staff</th>
+                                    <th>Viewer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Lihat Dashboard</td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                </tr>
+                                <tr>
+                                    <td>Tambah / Edit Barang</td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                    <td>❌</td>
+                                </tr>
+                                <tr>
+                                    <td>Nonaktifkan Barang</td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                    <td>❌</td>
+                                    <td>❌</td>
+                                </tr>
+                                <tr>
+                                    <td>Input Stok / Transfer</td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                    <td>❌</td>
+                                </tr>
+                                <tr>
+                                    <td>Buat Purchase Order</td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                    <td>❌</td>
+                                </tr>
+                                <tr>
+                                    <td>Terima Barang (PO)</td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                    <td>❌</td>
+                                </tr>
+                                <tr>
+                                    <td>Buat Sales Order</td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                    <td>❌</td>
+                                </tr>
+                                <tr>
+                                    <td>Stock Opname</td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                    <td>❌</td>
+                                </tr>
+                                <tr>
+                                    <td>Lihat Laporan</td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                    <td>❌</td>
+                                    <td>✅</td>
+                                </tr>
+                                <tr>
+                                    <td>Kelola Lokasi / Gudang</td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                    <td>❌</td>
+                                    <td>❌</td>
+                                </tr>
+                                <tr>
+                                    <td>Kelola Supplier / Customer</td>
+                                    <td>✅</td>
+                                    <td>✅</td>
+                                    <td>Lihat saja</td>
+                                    <td>❌</td>
+                                </tr>
+                                <tr>
+                                    <td>Tambah / Edit Pengguna</td>
+                                    <td>✅</td>
+                                    <td>❌</td>
+                                    <td>❌</td>
+                                    <td>❌</td>
+                                </tr>
+                                <tr>
+                                    <td>Lihat Audit Trail</td>
+                                    <td>✅</td>
+                                    <td>❌</td>
+                                    <td>❌</td>
+                                    <td>❌</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+         DASHBOARD
+    ============================================================ -->
+                <section class="section section-anchor" id="dashboard">
+                    <h2 class="section-title">
+                        <span class="icon">📊</span> Dashboard
+                    </h2>
+                    <p class="section-subtitle">
+                        Ringkasan kondisi inventori dalam satu tampilan
+                    </p>
+
+                    <!-- Mock Dashboard -->
+                    <div class="screen-mock">
+                        <div class="screen-mock-bar">
+                            <div
+                                class="screen-mock-dot"
+                                style="background: #ef4444"
+                            ></div>
+                            <div
+                                class="screen-mock-dot"
+                                style="background: #f59e0b"
+                            ></div>
+                            <div
+                                class="screen-mock-dot"
+                                style="background: #10b981"
+                            ></div>
+                            <span
+                                style="
+                                    color: #9ca3af;
+                                    font-size: 0.75rem;
+                                    margin-left: 0.5rem;
+                                "
+                                >Dashboard — Stockify</span
+                            >
+                        </div>
+                        <div style="display: flex; height: 320px">
+                            <div class="mock-sidebar">
+                                <div class="mock-sidebar-item active">
+                                    📊 Dashboard
+                                </div>
+                                <div class="mock-sidebar-item">
+                                    📦 Barang (Item)
+                                </div>
+                                <div class="mock-sidebar-item">
+                                    🏪 Inventori
+                                </div>
+                                <div class="mock-sidebar-item">
+                                    🚚 Purchase Order
+                                </div>
+                                <div class="mock-sidebar-item">
+                                    🛒 Sales Order
+                                </div>
+                                <div class="mock-sidebar-item">
+                                    📋 Stock Opname
+                                </div>
+                                <div class="mock-sidebar-item">📈 Laporan</div>
+                            </div>
+                            <div class="mock-main">
+                                <p
+                                    style="
+                                        font-size: 0.85rem;
+                                        color: #374151;
+                                        font-weight: 700;
+                                        margin-bottom: 0.75rem;
+                                    "
+                                >
+                                    Dashboard
+                                </p>
+                                <div
+                                    style="
+                                        display: grid;
+                                        grid-template-columns: repeat(4, 1fr);
+                                        gap: 0.5rem;
+                                        margin-bottom: 0.75rem;
+                                    "
+                                >
+                                    <div
+                                        style="
+                                            background: #eff6ff;
+                                            border-radius: 8px;
+                                            padding: 0.65rem;
+                                            font-size: 0.75rem;
+                                        "
+                                    >
+                                        <div
+                                            style="
+                                                color: #2563eb;
+                                                font-weight: 700;
+                                                font-size: 1.1rem;
+                                            "
+                                        >
+                                            42
+                                        </div>
+                                        <div style="color: #6b7280">
+                                            Total Barang
+                                        </div>
+                                    </div>
+                                    <div
+                                        style="
+                                            background: #f0fdf4;
+                                            border-radius: 8px;
+                                            padding: 0.65rem;
+                                            font-size: 0.75rem;
+                                        "
+                                    >
+                                        <div
+                                            style="
+                                                color: #059669;
+                                                font-weight: 700;
+                                                font-size: 1.1rem;
+                                            "
+                                        >
+                                            Rp 180jt
+                                        </div>
+                                        <div style="color: #6b7280">
+                                            Nilai Stok
+                                        </div>
+                                    </div>
+                                    <div
+                                        style="
+                                            background: #fffbeb;
+                                            border-radius: 8px;
+                                            padding: 0.65rem;
+                                            font-size: 0.75rem;
+                                        "
+                                    >
+                                        <div
+                                            style="
+                                                color: #d97706;
+                                                font-weight: 700;
+                                                font-size: 1.1rem;
+                                            "
+                                        >
+                                            3
+                                        </div>
+                                        <div style="color: #6b7280">
+                                            Stok Rendah
+                                        </div>
+                                    </div>
+                                    <div
+                                        style="
+                                            background: #fff1f2;
+                                            border-radius: 8px;
+                                            padding: 0.65rem;
+                                            font-size: 0.75rem;
+                                        "
+                                    >
+                                        <div
+                                            style="
+                                                color: #dc2626;
+                                                font-weight: 700;
+                                                font-size: 1.1rem;
+                                            "
+                                        >
+                                            1
+                                        </div>
+                                        <div style="color: #6b7280">Habis</div>
+                                    </div>
+                                </div>
+                                <div
+                                    style="
+                                        display: grid;
+                                        grid-template-columns: 2fr 1fr;
+                                        gap: 0.5rem;
+                                    "
+                                >
+                                    <div
+                                        style="
+                                            background: #f9fafb;
+                                            border-radius: 8px;
+                                            padding: 0.65rem;
+                                            font-size: 0.75rem;
+                                            color: #6b7280;
+                                            height: 120px;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                        "
+                                    >
+                                        📊 Grafik Transaksi 6 Bulan
+                                    </div>
+                                    <div
+                                        style="
+                                            background: #f9fafb;
+                                            border-radius: 8px;
+                                            padding: 0.65rem;
+                                            font-size: 0.75rem;
+                                            color: #6b7280;
+                                            height: 120px;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                        "
+                                    >
+                                        🥧 Nilai per Gudang
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin: 0.5rem 0 0.75rem">Kartu Statistik</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Kartu</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>📦 Total Barang</td>
+                                    <td>
+                                        Jumlah item aktif yang terdaftar di
+                                        sistem
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>💰 Nilai Stok</td>
+                                    <td>
+                                        Total nilai inventori berdasarkan harga
+                                        beli × stok saat ini
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>⚠️ Stok Rendah</td>
+                                    <td>
+                                        Jumlah item yang stoknya ≤ reorder point
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>🔴 Stok Habis</td>
+                                    <td>Item dengan stok = 0</td>
+                                </tr>
+                                <tr>
+                                    <td>🚚 PO Pending</td>
+                                    <td>
+                                        Purchase Order berstatus
+                                        Draft/Dikirim/Sebagian
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>🛒 SO Pending</td>
+                                    <td>
+                                        Sales Order berstatus
+                                        Draft/Dikonfirmasi/Dikirim
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>🔄 Transaksi Hari Ini</td>
+                                    <td>Total pergerakan stok pada hari ini</td>
+                                </tr>
+                                <tr>
+                                    <td>📍 Lokasi Aktif</td>
+                                    <td>Jumlah gudang/toko yang aktif</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="alert alert-info" style="margin-top: 1rem">
+                        <span class="alert-icon">🔄</span>
+                        <div>
+                            Dashboard diperbarui otomatis setiap
+                            <strong>60 detik</strong>. Notifikasi diperbarui
+                            setiap <strong>30 detik</strong>.
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+         MASTER BARANG
+    ============================================================ -->
+                <section class="section section-anchor" id="master-barang">
+                    <h2 class="section-title">
+                        <span class="icon">📦</span> Master Barang
+                    </h2>
+                    <p class="section-subtitle">
+                        Kelola data produk/barang beserta informasi lengkapnya
+                    </p>
+
+                    <h3 style="margin-bottom: 0.75rem">
+                        Cara Menambah Barang Baru
+                    </h3>
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <h4>Klik "Tambah Barang"</h4>
+                                <p>
+                                    Tombol biru di pojok kanan atas halaman
+                                    Barang (Item).
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <h4>Isi Data Wajib</h4>
+                                <ul>
+                                    <li>
+                                        <strong>SKU</strong> — Kode unik produk
+                                        (cth: ELEC-LAP-001)
+                                    </li>
+                                    <li>
+                                        <strong>Nama Barang</strong> — Nama
+                                        lengkap produk
+                                    </li>
+                                    <li>
+                                        <strong>Harga Beli</strong> — Harga
+                                        perolehan dari supplier
+                                    </li>
+                                    <li>
+                                        <strong>Harga Jual</strong> — Harga jual
+                                        ke customer
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <h4>Isi Data Tambahan (Opsional)</h4>
+                                <ul>
+                                    <li>
+                                        <strong>Barcode</strong> — Kode EAN/UPC
+                                        untuk scan
+                                    </li>
+                                    <li>
+                                        <strong>Kategori</strong> —
+                                        Pengelompokan barang
+                                    </li>
+                                    <li>
+                                        <strong>Satuan</strong> — pcs, kg, box,
+                                        liter, dll
+                                    </li>
+                                    <li>
+                                        <strong
+                                            >Min. Stok & Reorder Point</strong
+                                        >
+                                        — Batas peringatan stok rendah
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">4</div>
+                            <div class="step-content">
+                                <h4>Aktifkan Tracking (Opsional)</h4>
+                                <ul>
+                                    <li>
+                                        <strong>Tracking Serial Number</strong>
+                                        — Untuk barang elektronik yang perlu
+                                        dilacak per unit
+                                    </li>
+                                    <li>
+                                        <strong>Tracking Batch/Lot</strong> —
+                                        Untuk produk dengan tanggal kadaluarsa
+                                        (makanan, obat)
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">5</div>
+                            <div class="step-content">
+                                <h4>Klik "Simpan"</h4>
+                                <p>
+                                    Barang akan langsung tersedia di sistem dan
+                                    bisa ditambahkan ke inventori.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin: 1.5rem 0 0.75rem">Field Penjelasan</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Tipe</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>SKU</td>
+                                    <td>
+                                        <span class="badge badge-red"
+                                            >Wajib</span
+                                        >
+                                    </td>
+                                    <td>
+                                        Stock Keeping Unit — kode unik internal,
+                                        tidak bisa diubah setelah dibuat
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Barcode</td>
+                                    <td>
+                                        <span class="badge badge-gray"
+                                            >Opsional</span
+                                        >
+                                    </td>
+                                    <td>
+                                        Kode EAN-13, UPC, atau QR untuk scanning
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Nama Barang</td>
+                                    <td>
+                                        <span class="badge badge-red"
+                                            >Wajib</span
+                                        >
+                                    </td>
+                                    <td>
+                                        Nama lengkap produk yang tampil di
+                                        laporan
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Deskripsi</td>
+                                    <td>
+                                        <span class="badge badge-gray"
+                                            >Opsional</span
+                                        >
+                                    </td>
+                                    <td>Keterangan tambahan produk</td>
+                                </tr>
+                                <tr>
+                                    <td>Harga Beli</td>
+                                    <td>
+                                        <span class="badge badge-red"
+                                            >Wajib</span
+                                        >
+                                    </td>
+                                    <td>
+                                        Digunakan untuk menghitung nilai stok
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Harga Jual</td>
+                                    <td>
+                                        <span class="badge badge-red"
+                                            >Wajib</span
+                                        >
+                                    </td>
+                                    <td>Auto-fill saat membuat Sales Order</td>
+                                </tr>
+                                <tr>
+                                    <td>Min. Stok</td>
+                                    <td>
+                                        <span class="badge badge-amber"
+                                            >Dianjurkan</span
+                                        >
+                                    </td>
+                                    <td>
+                                        Level kritis — badge merah jika stok ≤
+                                        nilai ini
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Reorder Point</td>
+                                    <td>
+                                        <span class="badge badge-amber"
+                                            >Dianjurkan</span
+                                        >
+                                    </td>
+                                    <td>
+                                        Level peringatan — badge kuning dan
+                                        notifikasi dikirim
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Kategori</td>
+                                    <td>
+                                        <span class="badge badge-gray"
+                                            >Opsional</span
+                                        >
+                                    </td>
+                                    <td>Pengelompokan untuk filter laporan</td>
+                                </tr>
+                                <tr>
+                                    <td>Satuan</td>
+                                    <td>
+                                        <span class="badge badge-gray"
+                                            >Opsional</span
+                                        >
+                                    </td>
+                                    <td>
+                                        pcs, box, kg, liter — tampil di semua
+                                        transaksi
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <span class="alert-icon">⚠️</span>
+                        <div>
+                            SKU dan Barcode <strong>harus unik</strong> di
+                            seluruh sistem. Jika sudah digunakan, sistem akan
+                            menolak dengan error 409.
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+         INVENTORI
+    ============================================================ -->
+                <section class="section section-anchor" id="inventori">
+                    <h2 class="section-title">
+                        <span class="icon">🏪</span> Inventori & Stok
+                    </h2>
+                    <p class="section-subtitle">
+                        Pantau level stok per barang per lokasi secara real-time
+                    </p>
+
+                    <p>
+                        Halaman Inventori menampilkan stok terkini untuk semua
+                        kombinasi <strong>barang × lokasi</strong>. Setiap
+                        transaksi (PO, SO, Transfer, Opname) langsung
+                        memperbarui angka di sini.
+                    </p>
+
+                    <h3 style="margin: 1.5rem 0 0.75rem">
+                        Indikator Status Stok
+                    </h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Kondisi</th>
+                                    <th>Warna Progress Bar</th>
+                                    <th>Tindakan yang Disarankan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-green"
+                                            >Normal</span
+                                        >
+                                    </td>
+                                    <td>Stok &gt; Reorder Point</td>
+                                    <td>🟢 Hijau</td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-amber"
+                                            >Rendah</span
+                                        >
+                                    </td>
+                                    <td>Min Stok &lt; Stok ≤ Reorder Point</td>
+                                    <td>🟡 Kuning</td>
+                                    <td>Buat Purchase Order segera</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-red"
+                                            >Kritis</span
+                                        >
+                                    </td>
+                                    <td>0 &lt; Stok ≤ Min Stok</td>
+                                    <td>🔴 Merah</td>
+                                    <td>
+                                        Reorder darurat / transfer dari gudang
+                                        lain
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-red"
+                                            >Habis</span
+                                        >
+                                    </td>
+                                    <td>Stok = 0</td>
+                                    <td>🔴 Merah</td>
+                                    <td>Segera restock</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 style="margin: 1.5rem 0 0.75rem">Filter & Pencarian</h3>
+                    <ul>
+                        <li>
+                            <strong>Search</strong> — Cari berdasarkan nama
+                            barang atau SKU
+                        </li>
+                        <li>
+                            <strong>Filter Lokasi</strong> — Tampilkan stok
+                            hanya di gudang/toko tertentu
+                        </li>
+                        <li>
+                            <strong>Filter Status</strong> — Normal, Stok
+                            Rendah, Habis, atau Semua
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- ============================================================
+         TRANSFER STOK
+    ============================================================ -->
+                <section class="section section-anchor" id="transfer-stok">
+                    <h2 class="section-title">
+                        <span class="icon">🔄</span> Transfer Stok
+                    </h2>
+                    <p class="section-subtitle">
+                        Pindahkan barang antar gudang atau toko
+                    </p>
+
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <h4>Pilih Lokasi Asal</h4>
+                                <p>
+                                    Gudang atau toko sumber barang yang akan
+                                    dipindahkan.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <h4>Pilih Lokasi Tujuan</h4>
+                                <p>
+                                    Sistem otomatis menyembunyikan lokasi yang
+                                    sama dengan asal.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <h4>Cari & Pilih Barang</h4>
+                                <p>
+                                    Gunakan kolom pencarian untuk menemukan
+                                    barang dengan cepat.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">4</div>
+                            <div class="step-content">
+                                <h4>Masukkan Jumlah</h4>
+                                <p>
+                                    Sistem akan validasi apakah stok di lokasi
+                                    asal mencukupi.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">5</div>
+                            <div class="step-content">
+                                <h4>Klik "Transfer Sekarang"</h4>
+                                <p>
+                                    Stok di kedua lokasi langsung diperbarui
+                                    secara atomik (tidak bisa
+                                    setengah-setengah).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <span class="alert-icon">ℹ️</span>
+                        <div>
+                            Transfer menghasilkan 2 transaksi:
+                            <strong>TRANSFER_OUT</strong> dari lokasi asal dan
+                            <strong>TRANSFER_IN</strong> ke lokasi tujuan,
+                            keduanya dengan nomor referensi yang sama (cth:
+                            <code>TRF-1718234567890</code>).
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+         PURCHASE ORDER
+    ============================================================ -->
+                <section class="section section-anchor" id="purchase-order">
+                    <h2 class="section-title">
+                        <span class="icon">🚚</span> Purchase Order
+                    </h2>
+                    <p class="section-subtitle">
+                        Kelola pemesanan barang ke supplier dan penerimaan
+                        barang
+                    </p>
+
+                    <h3 style="margin-bottom: 0.75rem">Alur Purchase Order</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-line">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-bar"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>
+                                    <span
+                                        class="badge badge-gray"
+                                        style="margin-right: 0.5rem"
+                                        >DRAFT</span
+                                    >
+                                    Buat PO
+                                </h4>
+                                <p>
+                                    Pilih supplier, lokasi tujuan, tambahkan
+                                    item dengan jumlah dan harga beli. PO
+                                    tersimpan sebagai Draft.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-line">
+                                <div
+                                    class="timeline-dot"
+                                    style="background: #2563eb"
+                                ></div>
+                                <div class="timeline-bar"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>
+                                    <span
+                                        class="badge badge-blue"
+                                        style="margin-right: 0.5rem"
+                                        >SENT</span
+                                    >
+                                    PO Dikirim ke Supplier
+                                </h4>
+                                <p>
+                                    Ubah status ke "Dikirim" setelah PO
+                                    dikirimkan ke supplier secara manual/email.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-line">
+                                <div
+                                    class="timeline-dot"
+                                    style="background: #d97706"
+                                ></div>
+                                <div class="timeline-bar"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>
+                                    <span
+                                        class="badge badge-amber"
+                                        style="margin-right: 0.5rem"
+                                        >PARTIAL</span
+                                    >
+                                    Sebagian Diterima
+                                </h4>
+                                <p>
+                                    Jika barang datang tidak sekaligus, sistem
+                                    mencatat penerimaan sebagian.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-line">
+                                <div
+                                    class="timeline-dot"
+                                    style="background: #059669"
+                                ></div>
+                                <div class="timeline-bar"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <h4>
+                                    <span
+                                        class="badge badge-green"
+                                        style="margin-right: 0.5rem"
+                                        >RECEIVED</span
+                                    >
+                                    Selesai Diterima
+                                </h4>
+                                <p>
+                                    Semua item sudah diterima. Stok otomatis
+                                    bertambah di gudang tujuan. Transaksi
+                                    PURCHASE tercatat.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin: 1.5rem 0 0.75rem">
+                        Cara Menerima Barang
+                    </h3>
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <h4>Klik ikon ✅ pada baris PO</h4>
+                                <p>
+                                    Hanya muncul untuk PO berstatus Draft,
+                                    Dikirim, atau Sebagian Diterima.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <h4>Isi Jumlah Barang yang Diterima</h4>
+                                <p>
+                                    Bisa berbeda dari jumlah order (penerimaan
+                                    parsial). Sistem pre-fill dengan sisa yang
+                                    belum diterima.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <h4>Klik "Konfirmasi Penerimaan"</h4>
+                                <p>
+                                    Stok langsung bertambah. Jika semua item
+                                    sudah diterima, status PO otomatis menjadi
+                                    RECEIVED.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-success">
+                        <span class="alert-icon">✅</span>
+                        <div>
+                            Setelah penerimaan, sistem otomatis memeriksa apakah
+                            ada barang yang stoknya rendah dan mengirim
+                            <strong>notifikasi</strong> ke Admin & Manager.
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+         SALES ORDER
+    ============================================================ -->
+                <section class="section section-anchor" id="sales-order">
+                    <h2 class="section-title">
+                        <span class="icon">🛒</span> Sales Order
+                    </h2>
+                    <p class="section-subtitle">
+                        Kelola penjualan dengan pengurangan stok otomatis
+                    </p>
+
+                    <div class="alert alert-warning">
+                        <span class="alert-icon">⚠️</span>
+                        <div>
+                            Stok <strong>langsung dikurangi</strong> saat Sales
+                            Order berhasil dibuat (status CONFIRMED). Pastikan
+                            stok mencukupi sebelum membuat SO.
+                        </div>
+                    </div>
+
+                    <h3 style="margin: 1.25rem 0 0.75rem">
+                        Cara Membuat Sales Order
+                    </h3>
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <h4>Pilih Customer (Opsional)</h4>
+                                <p>
+                                    SO bisa dibuat tanpa customer untuk
+                                    penjualan tunai/walk-in.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <h4>Pilih Lokasi</h4>
+                                <p>
+                                    Stok akan dikurangi dari lokasi yang
+                                    dipilih.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <h4>Tambahkan Item</h4>
+                                <p>
+                                    Cari dan pilih barang. Harga jual otomatis
+                                    terisi dari master data. Anda bisa
+                                    mengubahnya.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">4</div>
+                            <div class="step-content">
+                                <h4>Atur Diskon & Pajak</h4>
+                                <p>
+                                    Diskon dan pajak dalam persen (%). Total
+                                    dihitung otomatis.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">5</div>
+                            <div class="step-content">
+                                <h4>Klik "Buat Sales Order"</h4>
+                                <p>
+                                    Sistem memvalidasi stok. Jika mencukupi, SO
+                                    dibuat dan stok langsung dikurangi.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin: 1.5rem 0 0.75rem">Status Sales Order</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Keterangan</th>
+                                    <th>Stok</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-gray"
+                                            >DRAFT</span
+                                        >
+                                    </td>
+                                    <td>SO dibuat tapi belum dikonfirmasi</td>
+                                    <td>Belum dikurangi</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-blue"
+                                            >CONFIRMED</span
+                                        >
+                                    </td>
+                                    <td>
+                                        SO dikonfirmasi — default saat dibuat
+                                    </td>
+                                    <td>✅ Dikurangi</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-amber"
+                                            >SHIPPED</span
+                                        >
+                                    </td>
+                                    <td>Barang sudah dikirim ke customer</td>
+                                    <td>✅ Dikurangi</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-green"
+                                            >DELIVERED</span
+                                        >
+                                    </td>
+                                    <td>Barang sudah diterima customer</td>
+                                    <td>✅ Dikurangi</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-red"
+                                            >CANCELLED</span
+                                        >
+                                    </td>
+                                    <td>SO dibatalkan</td>
+                                    <td>⚠️ Perlu adjustment manual</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+         STOCK OPNAME
+    ============================================================ -->
+                <section class="section section-anchor" id="stock-opname">
+                    <h2 class="section-title">
+                        <span class="icon">📋</span> Stock Opname
+                    </h2>
+                    <p class="section-subtitle">
+                        Hitung fisik stok dan sesuaikan dengan data sistem
+                    </p>
+
+                    <p>
+                        Stock Opname adalah proses penghitungan fisik stok untuk
+                        memverifikasi keakuratan data sistem. Setiap selisih
+                        akan dicatat dan bisa disesuaikan secara otomatis.
+                    </p>
+
+                    <h3 style="margin: 1.5rem 0 0.75rem">Alur Stock Opname</h3>
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <h4>Mulai Opname Baru</h4>
+                                <p>
+                                    Klik "Mulai Opname", pilih lokasi. Sistem
+                                    otomatis membuat daftar semua barang di
+                                    lokasi tersebut beserta stok sistem saat
+                                    ini.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <h4>Hitung Stok Fisik</h4>
+                                <p>
+                                    Klik tombol "Input" pada baris opname.
+                                    Masukkan jumlah fisik untuk setiap barang.
+                                    Selisih dihitung otomatis (+ berarti lebih,
+                                    - berarti kurang).
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <h4>Simpan Hitungan (Sementara)</h4>
+                                <p>
+                                    Klik "Simpan Hitungan" untuk menyimpan
+                                    progress tanpa mengubah stok. Bisa
+                                    dilanjutkan nanti.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">4</div>
+                            <div class="step-content">
+                                <h4>Selesaikan & Sesuaikan Stok</h4>
+                                <p>
+                                    Klik "Selesaikan & Sesuaikan Stok". Stok di
+                                    sistem akan diubah sesuai hitungan fisik.
+                                    Semua penyesuaian tercatat sebagai transaksi
+                                    OPNAME.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-danger">
+                        <span class="alert-icon">🚨</span>
+                        <div>
+                            <strong>Perhatian:</strong> Setelah klik
+                            "Selesaikan", stok sistem akan disesuaikan secara
+                            permanen. Pastikan semua hitungan fisik sudah benar
+                            sebelum menyelesaikan opname.
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+         LAPORAN
+    ============================================================ -->
+                <section class="section section-anchor" id="laporan">
+                    <h2 class="section-title">
+                        <span class="icon">📈</span> Laporan & Analitik
+                    </h2>
+                    <p class="section-subtitle">
+                        Lima jenis laporan untuk analisis mendalam
+                    </p>
+
+                    <div class="card-grid">
+                        <div class="feature-card">
+                            <div class="icon-wrap bg-blue">💰</div>
+                            <h3>Nilai Stok</h3>
+                            <p>
+                                Nilai inventori per barang per lokasi. Termasuk
+                                grafik bar 10 item terbesar. Total nilai
+                                keseluruhan ditampilkan di header.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon-wrap bg-amber">⚠️</div>
+                            <h3>Stok Rendah</h3>
+                            <p>
+                                Semua item yang stoknya ≤ reorder point,
+                                diurutkan dari yang paling kritis. Bisa filter
+                                per lokasi.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon-wrap bg-gray">🔄</div>
+                            <h3>Riwayat Transaksi</h3>
+                            <p>
+                                Semua pergerakan stok dengan filter tanggal dan
+                                lokasi. Termasuk tipe, referensi, dan user yang
+                                melakukan.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon-wrap bg-green">📊</div>
+                            <h3>Rangkuman Penjualan</h3>
+                            <p>
+                                Total qty terjual dan pendapatan per barang.
+                                Grafik bar 10 best seller. Filter periode dan
+                                lokasi.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon-wrap bg-purple">🕵️</div>
+                            <h3>Audit Trail</h3>
+                            <p>
+                                Log semua aktivitas pengguna: CREATE, UPDATE,
+                                DELETE, LOGIN. Hanya bisa diakses Admin.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info" style="margin-top: 1.5rem">
+                        <span class="alert-icon">📅</span>
+                        <div>
+                            Semua laporan mendukung
+                            <strong>filter tanggal</strong> (periode) dan
+                            <strong>filter lokasi</strong>. Gunakan kombinasi
+                            keduanya untuk analisis yang lebih spesifik.
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 2rem; margin-bottom: 0.75rem">Export Laporan (PDF & Excel)</h3>
+                    <p>
+                        Setiap laporan dapat diunduh atau diekspor ke dalam format <strong>PDF</strong> dan <strong>Excel (.xlsx)</strong> untuk keperluan arsip atau analisis lebih lanjut di luar sistem.
+                    </p>
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <h4>Buka Laporan</h4>
+                                <p>Pilih jenis laporan yang ingin Anda lihat dari menu navigasi Laporan.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <h4>Terapkan Filter (Opsional)</h4>
+                                <p>Sesuaikan filter tanggal dan lokasi jika diperlukan untuk menampilkan data yang lebih spesifik.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <h4>Klik Tombol Export</h4>
+                                <p>Pada bagian atas tabel atau halaman laporan, klik tombol <strong>Export PDF</strong> untuk menyimpan dokumen siap cetak, atau <strong>Export Excel</strong> untuk mengunduh raw data dalam format spreadsheet (bisa diolah kembali).</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+         LOKASI
+    ============================================================ -->
+                <section class="section section-anchor" id="lokasi">
+                    <h2 class="section-title">
+                        <span class="icon">📍</span> Lokasi & Gudang
+                    </h2>
+                    <p class="section-subtitle">
+                        Kelola semua titik inventori dalam jaringan distribusi
+                        Anda
+                    </p>
+
+                    <h3 style="margin-bottom: 0.75rem">Tipe Lokasi</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tipe</th>
+                                    <th>Ikon</th>
+                                    <th>Kegunaan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>WAREHOUSE</strong></td>
+                                    <td>🏭</td>
+                                    <td>Gudang penyimpanan utama</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>STORE</strong></td>
+                                    <td>🏪</td>
+                                    <td>Toko atau outlet penjualan</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>SUPPLIER</strong></td>
+                                    <td>🚚</td>
+                                    <td>
+                                        Lokasi referensi supplier (jarang
+                                        digunakan)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>CUSTOMER</strong></td>
+                                    <td>👤</td>
+                                    <td>
+                                        Lokasi referensi customer (jarang
+                                        digunakan)
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="alert alert-info" style="margin-top: 1rem">
+                        <span class="alert-icon">💡</span>
+                        <div>
+                            <strong>Kode Lokasi</strong> bersifat unik dan tidak
+                            bisa diubah setelah dibuat. Gunakan format yang
+                            konsisten, cth: <code>GDG-01</code>,
+                            <code>TKO-JKT-01</code>.
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+         SUPPLIER
+    ============================================================ -->
+                <section class="section section-anchor" id="supplier">
+                    <h2 class="section-title">
+                        <span class="icon">🏭</span> Supplier
+                    </h2>
+                    <p class="section-subtitle">
+                        Database pemasok barang untuk Purchase Order
+                    </p>
+
+                    <p>
+                        Data supplier digunakan saat membuat Purchase Order.
+                        Field yang tersedia: Kode, Nama, Kontak PIC, Email,
+                        Telepon, dan Alamat.
+                    </p>
+
+                    <div class="alert alert-info">
+                        <span class="alert-icon">💡</span>
+                        <div>
+                            Kode supplier harus unik (cth:
+                            <code>SUP-001</code>). PO bisa dibuat tanpa memilih
+                            supplier (untuk pembelian tanpa vendor terdaftar).
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+         CUSTOMER
+    ============================================================ -->
+                <section class="section section-anchor" id="customer">
+                    <h2 class="section-title">
+                        <span class="icon">👤</span> Customer
+                    </h2>
+                    <p class="section-subtitle">
+                        Database pelanggan untuk Sales Order
+                    </p>
+
+                    <p>
+                        Data customer digunakan saat membuat Sales Order. Field
+                        yang tersedia: Kode, Nama, Kontak PIC, Email, Telepon,
+                        dan Alamat.
+                    </p>
+
+                    <div class="alert alert-info">
+                        <span class="alert-icon">💡</span>
+                        <div>
+                            SO bisa dibuat tanpa customer terdaftar (untuk
+                            penjualan walk-in/tunai). Customer dipilih secara
+                            opsional.
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+         PENGGUNA
+    ============================================================ -->
+                <section class="section section-anchor" id="pengguna">
+                    <h2 class="section-title">
+                        <span class="icon">🔐</span> Pengguna & Akses
+                    </h2>
+                    <p class="section-subtitle">
+                        Manajemen akun dan hak akses (Admin only)
+                    </p>
+
+                    <h3 style="margin-bottom: 0.75rem">
+                        Cara Menambah Pengguna Baru
+                    </h3>
+                    <div class="steps">
+                        <div class="step">
+                            <div class="step-num">1</div>
+                            <div class="step-content">
+                                <h4>Buka menu Pengguna</h4>
+                                <p>
+                                    Hanya tersedia untuk akun dengan role ADMIN.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">2</div>
+                            <div class="step-content">
+                                <h4>Klik "Tambah Pengguna"</h4>
+                                <p>
+                                    Isi nama, email, password awal, dan pilih
+                                    role.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-num">3</div>
+                            <div class="step-content">
+                                <h4>Pengguna Login Pertama Kali</h4>
+                                <p>
+                                    Berikan informasi login ke pengguna.
+                                    Disarankan untuk mengubah password setelah
+                                    login pertama di menu Pengaturan.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <span class="alert-icon">⚠️</span>
+                        <div>
+                            Satu email hanya bisa digunakan untuk satu akun.
+                            Akun yang dinonaktifkan tidak bisa login namun data
+                            historisnya tetap tersimpan.
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+         API REFERENCE
+    ============================================================ -->
+                <section class="section section-anchor" id="api">
+                    <h2 class="section-title">
+                        <span class="icon">🔌</span> REST API Reference
+                    </h2>
+                    <p class="section-subtitle">
+                        Semua endpoint memerlukan sesi autentikasi yang valid
+                    </p>
+
+                    <div class="alert alert-warning">
+                        <span class="alert-icon">🔒</span>
+                        <div>
+                            Semua endpoint dilindungi. Autentikasi dilakukan via
+                            <strong>session cookie</strong> dari NextAuth.
+                            Pastikan sudah login sebelum memanggil API.
+                        </div>
+                    </div>
+
+                    <h3 style="margin: 1.5rem 0 0.75rem">Barang (Items)</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Method</th>
+                                    <th>Endpoint</th>
+                                    <th>Deskripsi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span class="method method-get"
+                                            >GET</span
+                                        >
+                                    </td>
+                                    <td><code>/api/items</code></td>
+                                    <td>
+                                        Daftar barang (query: search,
+                                        categoryId, page, limit)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="method method-post"
+                                            >POST</span
+                                        >
+                                    </td>
+                                    <td><code>/api/items</code></td>
+                                    <td>Tambah barang baru</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="method method-get"
+                                            >GET</span
+                                        >
+                                    </td>
+                                    <td><code>/api/items/[id]</code></td>
+                                    <td>Detail barang + stok per lokasi</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="method method-put"
+                                            >PUT</span
+                                        >
+                                    </td>
+                                    <td><code>/api/items/[id]</code></td>
+                                    <td>Update barang</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="method method-delete"
+                                            >DELETE</span
+                                        >
+                                    </td>
+                                    <td><code>/api/items/[id]</code></td>
+                                    <td>Nonaktifkan barang (soft delete)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 style="margin: 1.5rem 0 0.75rem">Inventori</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Method</th>
+                                    <th>Endpoint</th>
+                                    <th>Deskripsi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span class="method method-get"
+                                            >GET</span
+                                        >
+                                    </td>
+                                    <td><code>/api/inventory</code></td>
+                                    <td>
+                                        Stok per barang per lokasi (query:
+                                        locationId, itemId, lowStock)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="method method-post"
+                                            >POST</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <code>/api/inventory/transfer</code>
+                                    </td>
+                                    <td>Transfer stok antar lokasi</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="method method-get"
+                                            >GET</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <code>/api/inventory/transactions</code>
+                                    </td>
+                                    <td>
+                                        Riwayat transaksi stok (query: itemId,
+                                        locationId, type, page)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="method method-get"
+                                            >GET</span
+                                        >
+                                    </td>
+                                    <td><code>/api/scan?barcode=xxx</code></td>
+                                    <td>
+                                        Lookup barang berdasarkan barcode atau
+                                        SKU
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 style="margin: 1.5rem 0 0.75rem">
+                        Purchase & Sales Order
+                    </h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Method</th>
+                                    <th>Endpoint</th>
+                                    <th>Deskripsi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span class="method method-get"
+                                            >GET</span
+                                        >
+                                    </td>
+                                    <td><code>/api/purchase-orders</code></td>
+                                    <td>
+                                        Daftar PO (query: status, supplierId)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="method method-post"
+                                            >POST</span
+                                        >
+                                    </td>
+                                    <td><code>/api/purchase-orders</code></td>
+                                    <td>Buat PO baru</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="method method-get"
+                                            >GET</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <code>/api/purchase-orders/[id]</code>
+                                    </td>
+                                    <td>Detail PO lengkap</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="method method-put"
+                                            >PUT</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <code>/api/purchase-orders/[id]</code>
+                                    </td>
+                                    <td>Update status/catatan PO</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="method method-post"
+                                            >POST</span
+                                        >
+                                    </td>
+                                    <td>
+                                        <code
+                                            >/api/purchase-orders/[id]/receive</code
+                                        >
+                                    </td>
+                                    <td>Terima barang dari PO</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="method method-get"
+                                            >GET</span
+                                        >
+                                    </td>
+                                    <td><code>/api/sales-orders</code></td>
+                                    <td>
+                                        Daftar SO (query: status, customerId)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="method method-post"
+                                            >POST</span
+                                        >
+                                    </td>
+                                    <td><code>/api/sales-orders</code></td>
+                                    <td>
+                                        Buat SO baru (stok langsung dikurangi)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="method method-get"
+                                            >GET</span
+                                        >
+                                    </td>
+                                    <td><code>/api/sales-orders/[id]</code></td>
+                                    <td>Detail SO lengkap</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 style="margin: 1.5rem 0 0.75rem">Laporan</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Method</th>
+                                    <th>Endpoint</th>
+                                    <th>Query <code>type</code></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span class="method method-get"
+                                            >GET</span
+                                        >
+                                    </td>
+                                    <td><code>/api/reports</code></td>
+                                    <td>
+                                        <code>stock_value</code> ·
+                                        <code>low_stock</code> ·
+                                        <code>transactions</code> ·
+                                        <code>sales_summary</code> ·
+                                        <code>purchase_summary</code> ·
+                                        <code>audit_log</code>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 style="margin: 1.5rem 0 0.75rem">Contoh Request</h3>
+                    <pre><code># Cari barang berdasarkan barcode
+GET /api/scan?barcode=8901234567890
+
+# Daftar stok rendah di gudang tertentu
+GET /api/inventory?locationId=clxxx&amp;lowStock=true
+
+# Laporan nilai stok periode tertentu
+GET /api/reports?type=transactions&amp;startDate=2024-01-01&amp;endDate=2024-12-31</code></pre>
+                </section>
+
+                <!-- ============================================================
+         NOTIFIKASI
+    ============================================================ -->
+                <section class="section section-anchor" id="notifikasi">
+                    <h2 class="section-title">
+                        <span class="icon">🔔</span> Notifikasi
+                    </h2>
+                    <p class="section-subtitle">
+                        Sistem peringatan otomatis untuk kondisi penting
+                    </p>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tipe</th>
+                                    <th>Trigger</th>
+                                    <th>Penerima</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-amber"
+                                            >LOW_STOCK</span
+                                        >
+                                    </td>
+                                    <td>
+                                        Stok barang ≤ reorder point setelah
+                                        penerimaan PO
+                                    </td>
+                                    <td>Admin, Manager</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-green"
+                                            >PO_RECEIVED</span
+                                        >
+                                    </td>
+                                    <td>
+                                        Semua item PO telah diterima (status
+                                        RECEIVED)
+                                    </td>
+                                    <td>Admin</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-blue"
+                                            >SO_CONFIRMED</span
+                                        >
+                                    </td>
+                                    <td>Sales Order berhasil dikonfirmasi</td>
+                                    <td>Admin, Manager</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-gray"
+                                            >SYSTEM</span
+                                        >
+                                    </td>
+                                    <td>Notifikasi sistem umum</td>
+                                    <td>Semua user</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <span class="alert-icon">🔄</span>
+                        <div>
+                            Notifikasi diperbarui setiap
+                            <strong>30 detik</strong>. Badge merah di ikon
+                            lonceng menunjukkan jumlah notifikasi yang belum
+                            dibaca.
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+         AUDIT TRAIL
+    ============================================================ -->
+                <section class="section section-anchor" id="audit-trail">
+                    <h2 class="section-title">
+                        <span class="icon">🕵️</span> Audit Trail
+                    </h2>
+                    <p class="section-subtitle">
+                        Rekam jejak semua aktivitas pengguna di sistem
+                    </p>
+
+                    <p>
+                        Setiap aksi penting dicatat secara otomatis ke dalam
+                        Audit Log, termasuk siapa yang melakukan, kapan, dan apa
+                        yang berubah.
+                    </p>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Aksi</th>
+                                    <th>Contoh</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-blue"
+                                            >LOGIN</span
+                                        >
+                                    </td>
+                                    <td>User berhasil login ke sistem</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-green"
+                                            >CREATE</span
+                                        >
+                                    </td>
+                                    <td>Menambah barang baru, membuat PO/SO</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-amber"
+                                            >UPDATE</span
+                                        >
+                                    </td>
+                                    <td>
+                                        Mengedit data barang, mengubah status PO
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="badge badge-red"
+                                            >DELETE</span
+                                        >
+                                    </td>
+                                    <td>Menonaktifkan barang</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <span class="alert-icon">🔍</span>
+                        <div>
+                            Audit Log dapat diakses melalui menu
+                            <strong>Laporan → tab Audit Trail</strong>. Hanya
+                            Admin yang bisa melihat log ini.
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+         FAQ
+    ============================================================ -->
+                <section class="section section-anchor" id="faq">
+                    <h2 class="section-title">
+                        <span class="icon">❓</span> FAQ — Pertanyaan Umum
+                    </h2>
+                    <p class="section-subtitle">
+                        Jawaban untuk masalah yang sering ditemui
+                    </p>
+
+                    <div
+                        style="
+                            display: flex;
+                            flex-direction: column;
+                            gap: 1rem;
+                            margin-top: 0.5rem;
+                        "
+                    >
+                        <div class="card">
+                            <h4 style="margin-bottom: 0.5rem">
+                                ❓ Bagaimana cara menambah stok awal barang
+                                baru?
+                            </h4>
+                            <p
+                                style="
+                                    font-size: 0.9rem;
+                                    color: var(--gray-600);
+                                "
+                            >
+                                Setelah barang dibuat di Master Barang, buat
+                                <strong>Purchase Order</strong> dengan supplier
+                                "Stok Awal" lalu terima barangnya. Stok akan
+                                otomatis masuk ke gudang yang dipilih.
+                                Alternatif: gunakan Stock Opname — masukkan
+                                barang baru dengan stok fisik yang diinginkan.
+                            </p>
+                        </div>
+
+                        <div class="card">
+                            <h4 style="margin-bottom: 0.5rem">
+                                ❓ Apakah bisa undo/membatalkan transaksi yang
+                                sudah terlanjur?
+                            </h4>
+                            <p
+                                style="
+                                    font-size: 0.9rem;
+                                    color: var(--gray-600);
+                                "
+                            >
+                                Tidak ada fitur undo otomatis. Untuk koreksi:
+                                (1) Jika PO salah, ubah status ke CANCELLED. (2)
+                                Jika SO salah, ubah ke CANCELLED lalu lakukan
+                                adjustment stok manual via Stock Opname. (3)
+                                Untuk transfer yang salah, lakukan transfer
+                                balik.
+                            </p>
+                        </div>
+
+                        <div class="card">
+                            <h4 style="margin-bottom: 0.5rem">
+                                ❓ Bagaimana cara scan barcode di HP?
+                            </h4>
+                            <p
+                                style="
+                                    font-size: 0.9rem;
+                                    color: var(--gray-600);
+                                "
+                            >
+                                Buka aplikasi di browser HP, gunakan fitur
+                                pencarian di halaman Barang atau Inventori.
+                                Ketik barcode secara manual atau hubungkan
+                                scanner Bluetooth ke HP. Fitur kamera scan via
+                                <code>@zxing/library</code> sudah terinstall dan
+                                bisa diintegrasikan.
+                            </p>
+                        </div>
+
+                        <div class="card">
+                            <h4 style="margin-bottom: 0.5rem">
+                                ❓ Database apa yang disarankan untuk
+                                production?
+                            </h4>
+                            <p
+                                style="
+                                    font-size: 0.9rem;
+                                    color: var(--gray-600);
+                                "
+                            >
+                                Untuk production, gunakan
+                                <strong>PostgreSQL</strong>. Ubah
+                                <code>DATABASE_URL</code> di
+                                <code>.env.local</code> dan ganti provider di
+                                <code>prisma/schema.prisma</code> dari
+                                <code>sqlite</code> ke <code>postgresql</code>,
+                                lalu jalankan <code>npm run db:push</code>.
+                            </p>
+                        </div>
+
+                        <div class="card">
+                            <h4 style="margin-bottom: 0.5rem">
+                                ❓ Bagaimana cara backup database?
+                            </h4>
+                            <p
+                                style="
+                                    font-size: 0.9rem;
+                                    color: var(--gray-600);
+                                "
+                            >
+                                Untuk SQLite, cukup copy file
+                                <code>prisma/dev.db</code>. Untuk PostgreSQL,
+                                gunakan <code>pg_dump</code>. Disarankan setup
+                                backup otomatis harian menggunakan cron job atau
+                                layanan managed database (Supabase, PlanetScale,
+                                Railway).
+                            </p>
+                        </div>
+
+                        <div class="card">
+                            <h4 style="margin-bottom: 0.5rem">
+                                ❓ Mengapa NEXTAUTH_SECRET penting?
+                            </h4>
+                            <p
+                                style="
+                                    font-size: 0.9rem;
+                                    color: var(--gray-600);
+                                "
+                            >
+                                NEXTAUTH_SECRET digunakan untuk menandatangani
+                                JWT token sesi. Jika diubah, semua sesi yang ada
+                                akan invalid dan semua user harus login ulang.
+                                Gunakan string acak yang panjang dan jangan
+                                pernah expose ke publik.
+                            </p>
+                        </div>
+
+                        <div class="card">
+                            <h4 style="margin-bottom: 0.5rem">
+                                ❓ Apakah bisa deploy ke Vercel?
+                            </h4>
+                            <p
+                                style="
+                                    font-size: 0.9rem;
+                                    color: var(--gray-600);
+                                "
+                            >
+                                Ya! Vercel adalah platform yang
+                                direkomendasikan. Set environment variables:
+                                <code>DATABASE_URL</code>,
+                                <code>NEXTAUTH_SECRET</code>,
+                                <code>NEXTAUTH_URL</code>. Gunakan PostgreSQL
+                                (Supabase gratis atau Vercel Postgres) karena
+                                SQLite tidak persistent di serverless.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ============================================================
+         TIPS & TRIK
+    ============================================================ -->
+                <section class="section section-anchor" id="tips">
+                    <h2 class="section-title">
+                        <span class="icon">💡</span> Tips & Trik
+                    </h2>
+                    <p class="section-subtitle">
+                        Best practice penggunaan Stockify
+                    </p>
+
+                    <div class="card-grid">
+                        <div class="feature-card">
+                            <div class="icon-wrap bg-blue">📐</div>
+                            <h3>Konsisten dalam SKU</h3>
+                            <p>
+                                Gunakan format yang terstruktur:
+                                <code>[KATEGORI]-[SUBKAT]-[NOMOR]</code>, cth:
+                                <code>ELEC-LAP-001</code>. Ini memudahkan
+                                pencarian dan pelaporan.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon-wrap bg-amber">⚠️</div>
+                            <h3>Atur Reorder Point</h3>
+                            <p>
+                                Selalu isi Reorder Point dan Min. Stok untuk
+                                setiap barang. Ini adalah kunci agar alert
+                                otomatis berfungsi dengan tepat.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon-wrap bg-green">📅</div>
+                            <h3>Opname Rutin</h3>
+                            <p>
+                                Lakukan stock opname minimal 1x per bulan atau
+                                per gudang. Ini menjaga akurasi data dan
+                                mendeteksi selisih lebih awal.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon-wrap bg-purple">🔐</div>
+                            <h3>Role yang Tepat</h3>
+                            <p>
+                                Jangan berikan role ADMIN sembarangan. Buat akun
+                                terpisah untuk setiap karyawan agar audit trail
+                                akurat.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon-wrap bg-red">🗃️</div>
+                            <h3>Gunakan Kategori</h3>
+                            <p>
+                                Buat hierarki kategori yang jelas sebelum mulai
+                                input barang. Ini sangat membantu saat filtering
+                                laporan.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="icon-wrap bg-gray">🔢</div>
+                            <h3>Barcode Konsisten</h3>
+                            <p>
+                                Pastikan setiap barcode hanya untuk 1 barang.
+                                Gunakan format EAN-13 untuk kompatibilitas
+                                dengan scanner fisik.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3 style="margin: 2rem 0 0.75rem">Shortcut & Navigasi</h3>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Aksi</th>
+                                    <th>Cara</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Pencarian cepat</td>
+                                    <td>
+                                        Klik kolom Search di setiap halaman dan
+                                        mulai ketik
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Collapse sidebar</td>
+                                    <td>
+                                        Klik tombol <kbd>‹</kbd> di pinggir
+                                        sidebar
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Buka Prisma Studio</td>
+                                    <td>
+                                        Jalankan
+                                        <code>npm run db:studio</code> di
+                                        terminal
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Reset database</td>
+                                    <td>
+                                        Hapus <code>prisma/dev.db</code> lalu
+                                        <code
+                                            >npm run db:push && npm run
+                                            db:seed</code
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Lihat log server</td>
+                                    <td>
+                                        Lihat terminal yang menjalankan
+                                        <code>npm run dev</code>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- ============================================================
+     FOOTER
+============================================================ -->
+        <footer class="footer">
+            <p>
+                📦 <strong>Stockify</strong> — Sistem Manajemen Inventori Modern
+            </p>
+            <p style="margin-top: 0.5rem">
+                Dibangun dengan Next.js · Prisma · NextAuth · Tailwind CSS
+            </p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem; opacity: 0.6">
+                © 2024 Stockify. Dokumentasi ini berlaku untuk versi 1.0
+            </p>
+        </footer>
+
+        <!-- ============================================================
+     SCRIPTS
+============================================================ -->
+        <script>
+            // Scroll progress bar
+            window.addEventListener("scroll", () => {
+                const el = document.getElementById("progress-bar");
+                const scrollTop = document.documentElement.scrollTop;
+                const scrollHeight =
+                    document.documentElement.scrollHeight -
+                    document.documentElement.clientHeight;
+                el.style.width = (scrollTop / scrollHeight) * 100 + "%";
+            });
+
+            // Active sidebar link on scroll
+            const sections = document.querySelectorAll(".section-anchor");
+            const sidebarLinks = document.querySelectorAll(".sidebar a");
+
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            const id = entry.target.getAttribute("id");
+                            sidebarLinks.forEach((link) => {
+                                link.classList.remove("active");
+                                if (link.getAttribute("href") === "#" + id) {
+                                    link.classList.add("active");
+                                }
+                            });
+                        }
+                    });
+                },
+                {
+                    rootMargin: "-64px 0px -60% 0px",
+                    threshold: 0,
+                },
+            );
+
+            sections.forEach((section) => observer.observe(section));
+
+            // Smooth scroll for sidebar links
+            sidebarLinks.forEach((link) => {
+                link.addEventListener("click", (e) => {
+                    const href = link.getAttribute("href");
+                    if (href && href.startsWith("#")) {
+                        e.preventDefault();
+                        const target = document.querySelector(href);
+                        if (target) {
+                            const top =
+                                target.getBoundingClientRect().top +
+                                window.scrollY -
+                                80;
+                            window.scrollTo({ top, behavior: "smooth" });
+                        }
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
