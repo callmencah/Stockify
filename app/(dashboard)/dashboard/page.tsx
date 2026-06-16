@@ -172,7 +172,7 @@ export default function DashboardPage() {
         {statCards.map((card) => (
           <Card key={card.title} className="hover:shadow-md transition-shadow">
             <CardContent className="pt-6">
-              <div className="flex flex-col">
+              <div className="flex flex-col items-center text-center">
                 <div className={`p-3 rounded-xl w-fit ${card.bg}`}>
                   <card.icon className={`h-6 w-6 ${card.color}`} />
                 </div>
