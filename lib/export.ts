@@ -114,19 +114,11 @@ export async function exportToPDF(options: ExportOptions): Promise<void> {
   const margin = 14;
 
   // ── Header ────────────────────────────────────────────────────────
-  doc.setFillColor(37, 99, 235); // primary blue
-  doc.roundedRect(margin, margin, 10, 10, 2, 2, "F");
-  
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(10);
-  doc.setFont("helvetica", "bold");
-  doc.text("S", margin + 3.2, margin + 7);
-
   // App name
   doc.setTextColor(17, 24, 39); // gray-900
   doc.setFontSize(16);
   doc.setFont("helvetica", "bold");
-  doc.text("Stockify", margin + 14, margin + 7.5);
+  doc.text("Stockify", margin, margin + 7.5);
 
   // Report title (right side)
   doc.setTextColor(17, 24, 39);
