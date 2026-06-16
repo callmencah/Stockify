@@ -176,9 +176,9 @@ export default function DashboardPage() {
                 <div className={`p-3 rounded-xl w-fit ${card.bg}`}>
                   <card.icon className={`h-6 w-6 ${card.color}`} />
                 </div>
-                <div className="min-w-0 mt-4">
+                <div className="min-w-0 mt-4 w-full">
                   <p className="text-sm font-medium text-muted-foreground">{card.title}</p>
-                  <p className="text-2xl font-bold mt-1 break-words">{card.value}</p>
+                  <p className="text-lg sm:text-xl md:text-2xl font-bold mt-1 break-all sm:break-words">{card.value}</p>
                   <p className="text-xs text-muted-foreground mt-1">{card.description}</p>
                 </div>
               </div>
