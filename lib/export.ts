@@ -113,46 +113,47 @@ export async function exportToPDF(options: ExportOptions): Promise<void> {
   const pageHeight = doc.internal.pageSize.getHeight();
   const margin = 14;
 
-  // ── Header band ──────────────────────────────────────────────────
-  doc.setFillColor(37, 99, 235); // blue-600
-  doc.rect(0, 0, pageWidth, 22, "F");
-
-  // Logo placeholder
-  doc.setFillColor(255, 255, 255);
-  doc.roundedRect(margin, 4, 14, 14, 2, 2, "F");
-  doc.setTextColor(37, 99, 235);
-  doc.setFontSize(9);
+  // ── Header ────────────────────────────────────────────────────────
+  doc.setFillColor(37, 99, 235); // primary blue
+  doc.roundedRect(margin, margin, 10, 10, 2, 2, "F");
+  
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(10);
   doc.setFont("helvetica", "bold");
-  doc.text("S", margin + 5, 13);
+  doc.text("S", margin + 3.2, margin + 7);
 
   // App name
-  doc.setTextColor(255, 255, 255);
-  doc.setFontSize(14);
+  doc.setTextColor(17, 24, 39); // gray-900
+  doc.setFontSize(16);
   doc.setFont("helvetica", "bold");
-  doc.text("Stockify", margin + 17, 11);
+  doc.text("Stockify", margin + 14, margin + 7.5);
 
   // Report title (right side)
-  doc.setFontSize(10);
-  doc.setFont("helvetica", "normal");
-  doc.text(title, pageWidth - margin, 9, { align: "right" });
+  doc.setTextColor(17, 24, 39);
+  doc.setFontSize(12);
+  doc.setFont("helvetica", "bold");
+  doc.text(title, pageWidth - margin, margin + 4, { align: "right" });
 
   if (subtitle) {
-    doc.setFontSize(8);
-    doc.text(subtitle, pageWidth - margin, 15, { align: "right" });
+    doc.setTextColor(107, 114, 128); // gray-500
+    doc.setFontSize(9);
+    doc.setFont("helvetica", "normal");
+    doc.text(subtitle, pageWidth - margin, margin + 9, { align: "right" });
   }
 
-  // ── Meta info ────────────────────────────────────────────────────
-  let yPos = 28;
-  doc.setTextColor(100, 100, 100);
-  doc.setFontSize(8);
-  doc.setFont("helvetica", "normal");
-  doc.text(
-    `Diekspor: ${formatDateTime(new Date())}   |   Total Data: ${formatNumber(data.length)}`,
-    margin,
-    yPos,
-  );
+  // Draw a subtle line under the header
+  doc.setDrawColor(229, 231, 235); // gray-200
+  doc.line(margin, margin + 14, pageWidth - margin, margin + 14);
 
-  yPos += 3;
+  // ── Meta info ────────────────────────────────────────────────────
+  let yPos = margin + 20;
+  doc.setTextColor(107, 114, 128);
+  doc.setFontSize(8.5);
+  doc.setFont("helvetica", "normal");
+  doc.text(`Diekspor: ${formatDateTime(new Date())}`, margin, yPos);
+  doc.text(`Total Data: ${formatNumber(data.length)}`, pageWidth - margin, yPos, { align: "right" });
+
+  yPos += 4;
 
   // ── Table ─────────────────────────────────────────────────────────
   const tableHeaders = columns.map((c) => c.header);
@@ -161,8 +162,6 @@ export async function exportToPDF(options: ExportOptions): Promise<void> {
   );
 
   // ── Proportional column widths ──────────────────────────────────
-  // Distribute available page width proportionally using column weight.
-  // This guarantees headers never get truncated mid-word.
   const availableWidth = pageWidth - 2 * margin;
   const totalWeight = columns.reduce((s, c) => s + (c.width ?? 20), 0);
   const colStyles = columns.reduce(
@@ -187,49 +186,46 @@ export async function exportToPDF(options: ExportOptions): Promise<void> {
     margin: { left: margin, right: margin },
     tableWidth: availableWidth,
     styles: {
-      fontSize: 8,
-      cellPadding: { top: 3, right: 3, bottom: 3, left: 3 },
+      font: "helvetica",
+      fontSize: 8.5,
+      cellPadding: { top: 5, right: 4, bottom: 5, left: 4 },
       overflow: "linebreak",
-      lineColor: [220, 220, 220],
-      lineWidth: 0.15,
-      minCellHeight: 8,
+      lineColor: [229, 231, 235], // gray-200
+      lineWidth: 0.1,
+      minCellHeight: 10,
     },
     headStyles: {
-      fillColor: [37, 99, 235],
-      textColor: 255,
+      fillColor: [249, 250, 251], // gray-50
+      textColor: [55, 65, 81], // gray-700
       fontStyle: "bold",
       fontSize: 8.5,
-      cellPadding: { top: 4, right: 3, bottom: 4, left: 3 },
-      minCellHeight: 10,
-      overflow: "linebreak",
+      cellPadding: { top: 5, right: 4, bottom: 5, left: 4 },
+      lineWidth: 0.1,
     },
     alternateRowStyles: {
-      fillColor: [249, 250, 251],
+      fillColor: [255, 255, 255],
     },
     bodyStyles: {
-      textColor: [40, 40, 40],
+      textColor: [31, 41, 55], // gray-800
     },
     columnStyles: colStyles,
     didDrawPage: (hookData) => {
       // Footer on every page
       const pageNum = hookData.pageNumber;
       const totalPages = doc.getNumberOfPages();
-      doc.setFontSize(7);
-      doc.setTextColor(150, 150, 150);
+      doc.setFontSize(8);
+      doc.setTextColor(156, 163, 175); // gray-400
       doc.text(
         `Stockify — ${title} | Halaman ${pageNum} dari ${totalPages}`,
         margin,
         pageHeight - 8,
       );
       doc.text(
-        "© Stockify Inventory Management",
+        "© Stockify",
         pageWidth - margin,
         pageHeight - 8,
         { align: "right" },
       );
-      // Bottom line
-      doc.setDrawColor(220, 220, 220);
-      doc.line(margin, pageHeight - 12, pageWidth - margin, pageHeight - 12);
     },
   });
 
@@ -237,29 +233,29 @@ export async function exportToPDF(options: ExportOptions): Promise<void> {
   if (summary) {
     const finalY =
       (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable
-        .finalY + 6;
+        .finalY + 8;
 
     if (finalY < pageHeight - 40) {
-      doc.setFillColor(239, 246, 255);
-      doc.setDrawColor(147, 197, 253);
-      const boxH = Object.keys(summary).length * 6 + 10;
-      doc.roundedRect(margin, finalY, 90, boxH, 2, 2, "FD");
+      const summaryKeys = Object.keys(summary);
+      const boxW = 80;
+      const boxH = summaryKeys.length * 7 + 6;
+      const boxX = pageWidth - margin - boxW;
+      
+      doc.setFillColor(249, 250, 251); // gray-50
+      doc.setDrawColor(229, 231, 235); // gray-200
+      doc.roundedRect(boxX, finalY, boxW, boxH, 2, 2, "FD");
 
-      doc.setFontSize(9);
-      doc.setTextColor(30, 64, 175);
-      doc.setFont("helvetica", "bold");
-      doc.text("Ringkasan", margin + 4, finalY + 7);
-
-      let rowY = finalY + 14;
-      doc.setFont("helvetica", "normal");
-      doc.setTextColor(50, 50, 50);
-      doc.setFontSize(8);
+      let rowY = finalY + 7;
       for (const [label, value] of Object.entries(summary)) {
-        doc.text(`${label}:`, margin + 4, rowY);
-        doc.setFont("helvetica", "bold");
-        doc.text(value, margin + 4 + 50, rowY, { align: "right" });
         doc.setFont("helvetica", "normal");
-        rowY += 6;
+        doc.setTextColor(107, 114, 128); // gray-500
+        doc.setFontSize(8.5);
+        doc.text(label, boxX + 6, rowY);
+        
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(17, 24, 39); // gray-900
+        doc.text(value, boxX + boxW - 6, rowY, { align: "right" });
+        rowY += 7;
       }
     }
   }
