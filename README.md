@@ -53,7 +53,10 @@ npm install
 npm run db:push
 
 # 3. Seed data demo
-npm run db:seed
+npm run db:seed       # Data demo (50 item)
+# Atau untuk volume besar:
+# npm run db:seed:10k  # 10.000 item
+# npm run db:seed:100k # 100.000 item
 
 # 4. Jalankan development server
 npm run dev
@@ -151,6 +154,8 @@ npm run build        # Build production
 npm run start        # Start production server
 npm run db:push      # Sync Prisma schema ke database
 npm run db:studio    # Buka Prisma Studio (DB GUI)
-npm run db:seed      # Seed data demo
+npm run db:seed      # Seed data demo (50 item)
+npm run db:seed:10k  # Seed 10.000 item (skala besar)
+npm run db:seed:100k # Seed 100.000 item (skala besar)
 npm run db:generate  # Generate Prisma client
 ```

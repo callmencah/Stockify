@@ -9,7 +9,9 @@
     "lint": "next lint",
     "db:push": "prisma db push",
     "db:studio": "prisma studio",
-    "db:seed": "tsx prisma/seed.ts",
+    "db:seed": "tsx prisma/seed.ts --items=50",
+    "db:seed:10k": "tsx prisma/seed.ts --items=10000",
+    "db:seed:100k": "tsx prisma/seed.ts --items=100000",
     "db:generate": "prisma generate"
   },
   "dependencies": {

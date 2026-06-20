@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
 import { api } from "@/lib/api";
 import { formatNumber, formatCurrency } from "@/lib/utils";
 import { Warehouse, Search, AlertTriangle, Filter } from "lucide-react";
@@ -32,44 +33,58 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
 import { Location, ItemLocation } from "@/types";
 
+interface InventoryResponse {
+  items: ItemLocation[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+  summary: {
+    totalValue: number;
+    lowCount: number;
+    outCount: number;
+  };
+}
+
 export default function InventoryPage() {
+  const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [locationId, setLocationId] = useState("all");
   const [filter, setFilter] = useState("all");
+  const [page, setPage] = useState(1);
+  const limit = 20;
+
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSearch(searchInput);
+      setPage(1);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [searchInput]);
 
   const { data: locations } = useQuery<Location[]>({
     queryKey: ["locations"],
     queryFn: () => api.get("/api/locations"),
   });
 
-  const { data: inventory, isLoading } = useQuery<ItemLocation[]>({
-    queryKey: ["inventory", locationId],
+  const { data, isLoading } = useQuery<InventoryResponse>({
+    queryKey: ["inventory", locationId, filter, search, page],
     queryFn: () =>
       api.get(
-        `/api/inventory${locationId && locationId !== "all" ? `?locationId=${locationId}` : ""}`
+        `/api/inventory?page=${page}&limit=${limit}` +
+          `${locationId !== "all" ? `&locationId=${locationId}` : ""}` +
+          `${filter !== "all" ? `&filter=${filter}` : ""}` +
+          `${search ? `&search=${encodeURIComponent(search)}` : ""}`
       ),
   });
 
-  const filteredInventory = inventory?.filter((il) => {
-    const matchSearch =
-      !search ||
-      il.item?.name.toLowerCase().includes(search.toLowerCase()) ||
-      il.item?.sku.toLowerCase().includes(search.toLowerCase());
-
-    const matchFilter =
-      filter === "all" ||
-      (filter === "low" && il.quantity <= (il.item?.reorderPoint || 0) && il.quantity > 0) ||
-      (filter === "out" && il.quantity <= 0) ||
-      (filter === "normal" && il.quantity > (il.item?.reorderPoint || 0));
-
-    return matchSearch && matchFilter;
-  });
-
-  const totalValue =
-    filteredInventory?.reduce(
-      (sum, il) => sum + il.quantity * (il.item?.buyPrice || 0),
-      0
-    ) || 0;
+  const totalItems = data?.pagination.total || 0;
+  const totalValue = data?.summary.totalValue || 0;
+  const lowStockCount = data?.summary.lowCount || 0;
+  const outOfStockCount = data?.summary.outCount || 0;
 
   const getStockStatus = (qty: number, reorderPoint: number, minStock: number) => {
     if (qty <= 0) return { label: "Habis", variant: "destructive" as const };
@@ -98,7 +113,7 @@ export default function InventoryPage() {
         <Card>
           <CardContent className="pt-4">
             <p className="text-sm text-muted-foreground">Total Item</p>
-            <p className="text-2xl font-bold">{formatNumber(filteredInventory?.length || 0)}</p>
+            <p className="text-2xl font-bold">{formatNumber(totalItems)}</p>
           </CardContent>
         </Card>
         <Card>
@@ -111,11 +126,7 @@ export default function InventoryPage() {
           <CardContent className="pt-4">
             <p className="text-sm text-muted-foreground">Stok Rendah</p>
             <p className="text-2xl font-bold text-amber-600">
-              {formatNumber(
-                filteredInventory?.filter(
-                  (il) => il.quantity <= (il.item?.reorderPoint || 0) && il.quantity > 0
-                ).length || 0
-              )}
+              {formatNumber(lowStockCount)}
             </p>
           </CardContent>
         </Card>
@@ -123,9 +134,7 @@ export default function InventoryPage() {
           <CardContent className="pt-4">
             <p className="text-sm text-muted-foreground">Stok Habis</p>
             <p className="text-2xl font-bold text-red-600">
-              {formatNumber(
-                filteredInventory?.filter((il) => il.quantity <= 0).length || 0
-              )}
+              {formatNumber(outOfStockCount)}
             </p>
           </CardContent>
         </Card>
@@ -139,11 +148,11 @@ export default function InventoryPage() {
               <Input
                 placeholder="Cari barang..."
                 className="pl-9"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
               />
             </div>
-            <Select value={locationId} onValueChange={setLocationId}>
+            <Select value={locationId} onValueChange={(val) => { setLocationId(val); setPage(1); }}>
               <SelectTrigger className="w-48">
                 <SelectValue placeholder="Semua lokasi" />
               </SelectTrigger>
@@ -156,7 +165,7 @@ export default function InventoryPage() {
                 ))}
               </SelectContent>
             </Select>
-            <Select value={filter} onValueChange={setFilter}>
+            <Select value={filter} onValueChange={(val) => { setFilter(val); setPage(1); }}>
               <SelectTrigger className="w-36">
                 <SelectValue />
               </SelectTrigger>
@@ -177,84 +186,115 @@ export default function InventoryPage() {
               ))}
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Barang</TableHead>
-                  <TableHead>Lokasi</TableHead>
-                  <TableHead>Kategori</TableHead>
-                  <TableHead className="text-right">Stok</TableHead>
-                  <TableHead>Level Stok</TableHead>
-                  <TableHead className="text-right">Nilai Stok</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredInventory?.map((il) => {
-                  const status = getStockStatus(
-                    il.quantity,
-                    il.item?.reorderPoint || 0,
-                    il.item?.minStock || 0
-                  );
-                  const percent = getStockPercent(
-                    il.quantity,
-                    il.item?.reorderPoint || 0
-                  );
-                  return (
-                    <TableRow key={il.id}>
-                      <TableCell>
-                        <div>
-                          <p className="font-medium">{il.item?.name}</p>
-                          <p className="text-xs text-muted-foreground font-mono">{il.item?.sku}</p>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{il.location?.name}</Badge>
-                      </TableCell>
-                      <TableCell>
-                        {il.item?.category?.name ? (
-                          <Badge variant="secondary">{il.item.category.name}</Badge>
-                        ) : "-"}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <span className="font-bold text-lg">{formatNumber(il.quantity)}</span>
-                        <span className="text-muted-foreground text-sm ml-1">
-                          {il.item?.unit?.abbreviation || "pcs"}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <div className="w-24">
-                          <Progress
-                            value={percent}
-                            className={
-                              status.variant === "destructive"
-                                ? "[&>div]:bg-red-500"
-                                : status.variant === "warning"
-                                ? "[&>div]:bg-amber-500"
-                                : "[&>div]:bg-emerald-500"
-                            }
-                          />
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right font-medium">
-                        {formatCurrency(il.quantity * (il.item?.buyPrice || 0))}
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={status.variant}>{status.label}</Badge>
+            <>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Barang</TableHead>
+                    <TableHead>Lokasi</TableHead>
+                    <TableHead>Kategori</TableHead>
+                    <TableHead className="text-right">Stok</TableHead>
+                    <TableHead>Level Stok</TableHead>
+                    <TableHead className="text-right">Nilai Stok</TableHead>
+                    <TableHead>Status</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {data?.items.map((il) => {
+                    const status = getStockStatus(
+                      il.quantity,
+                      il.item?.reorderPoint || 0,
+                      il.item?.minStock || 0
+                    );
+                    const percent = getStockPercent(
+                      il.quantity,
+                      il.item?.reorderPoint || 0
+                    );
+                    return (
+                      <TableRow key={il.id}>
+                        <TableCell>
+                          <div>
+                            <p className="font-medium">{il.item?.name}</p>
+                            <p className="text-xs text-muted-foreground font-mono">{il.item?.sku}</p>
+                          </div>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline">{il.location?.name}</Badge>
+                        </TableCell>
+                        <TableCell>
+                          {il.item?.category?.name ? (
+                            <Badge variant="secondary">{il.item.category.name}</Badge>
+                          ) : "-"}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <span className="font-bold text-lg">{formatNumber(il.quantity)}</span>
+                          <span className="text-muted-foreground text-sm ml-1">
+                            {il.item?.unit?.abbreviation || "pcs"}
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          <div className="w-24">
+                            <Progress
+                              value={percent}
+                              className={
+                                status.variant === "destructive"
+                                  ? "[&>div]:bg-red-500"
+                                  : status.variant === "warning"
+                                  ? "[&>div]:bg-amber-500"
+                                  : "[&>div]:bg-emerald-500"
+                              }
+                            />
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-right font-medium">
+                          {formatCurrency(il.quantity * (il.item?.buyPrice || 0))}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant={status.variant}>{status.label}</Badge>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                  {data?.items.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={7} className="text-center py-12">
+                        <Warehouse className="h-12 w-12 mx-auto text-muted-foreground mb-3" />
+                        <p className="text-muted-foreground">Tidak ada data inventori</p>
                       </TableCell>
                     </TableRow>
-                  );
-                })}
-                {filteredInventory?.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={7} className="text-center py-12">
-                      <Warehouse className="h-12 w-12 mx-auto text-muted-foreground mb-3" />
-                      <p className="text-muted-foreground">Tidak ada data inventori</p>
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
+                  )}
+                </TableBody>
+              </Table>
+
+              {data && data.pagination.totalPages > 1 && (
+                <div className="flex items-center justify-between mt-6 border-t pt-4">
+                  <p className="text-sm text-muted-foreground">
+                    Menampilkan {((page - 1) * limit) + 1} - {Math.min(page * limit, data.pagination.total)} dari {data.pagination.total} item
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setPage(p => Math.max(p - 1, 1))}
+                      disabled={page === 1}
+                    >
+                      Sebelumnya
+                    </Button>
+                    <span className="text-sm font-medium px-2">
+                      {page} / {data.pagination.totalPages}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setPage(p => Math.min(p + 1, data.pagination.totalPages))}
+                      disabled={page === data.pagination.totalPages}
+                    >
+                      Selanjutnya
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </CardContent>
       </Card>
