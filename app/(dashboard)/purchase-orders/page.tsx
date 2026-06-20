@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { formatCurrency, formatDate } from "@/lib/utils";
@@ -61,9 +62,11 @@ interface POItem {
 export default function PurchaseOrdersPage() {
   const { data: session } = useSession();
   const queryClient = useQueryClient();
+  const searchParams = useSearchParams();
+  const statusQuery = searchParams.get("status");
+
   const [search, setSearch] = useState("");
-  const initialStatus = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("status") || "all" : "all";
-  const [statusFilter, setStatusFilter] = useState(initialStatus);
+  const [statusFilter, setStatusFilter] = useState("all");
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showDetailDialog, setShowDetailDialog] = useState(false);
   const [showReceiveDialog, setShowReceiveDialog] = useState(false);
@@ -109,6 +112,12 @@ export default function PurchaseOrdersPage() {
     },
     onError: (err: Error) => toast.error(err.message),
   });
+
+  useEffect(() => {
+    if (statusQuery) {
+      setStatusFilter(statusQuery);
+    }
+  }, [statusQuery]);
 
   const receiveMutation = useMutation({
     mutationFn: ({ id, items }: { id: string; items: unknown[] }) =>

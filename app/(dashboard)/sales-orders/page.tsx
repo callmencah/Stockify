@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { formatCurrency, formatDate } from "@/lib/utils";
@@ -57,9 +58,11 @@ interface SOItem {
 
 export default function SalesOrdersPage() {
   const queryClient = useQueryClient();
+  const searchParams = useSearchParams();
+  const statusQuery = searchParams.get("status");
+
   const [search, setSearch] = useState("");
-  const initialStatus = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("status") || "all" : "all";
-  const [statusFilter, setStatusFilter] = useState(initialStatus);
+  const [statusFilter, setStatusFilter] = useState("all");
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showDetailDialog, setShowDetailDialog] = useState(false);
   const [selectedSO, setSelectedSO] = useState<SalesOrder | null>(null);
@@ -103,6 +106,12 @@ export default function SalesOrdersPage() {
     },
     onError: (err: Error) => toast.error(err.message),
   });
+
+  useEffect(() => {
+    if (statusQuery) {
+      setStatusFilter(statusQuery);
+    }
+  }, [statusQuery]);
 
   const resetForm = () => {
     setCustomerId("");

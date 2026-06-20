@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { api } from "@/lib/api";
@@ -49,13 +50,21 @@ interface InventoryResponse {
 }
 
 export default function InventoryPage() {
+  const searchParams = useSearchParams();
+  const filterQuery = searchParams.get("filter");
+
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [locationId, setLocationId] = useState("all");
-  const initialFilter = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("filter") || "all" : "all";
-  const [filter, setFilter] = useState(initialFilter);
+  const [filter, setFilter] = useState("all");
   const [page, setPage] = useState(1);
   const limit = 20;
+
+  useEffect(() => {
+    if (filterQuery) {
+      setFilter(filterQuery);
+    }
+  }, [filterQuery]);
 
   // Debounce search input
   useEffect(() => {
