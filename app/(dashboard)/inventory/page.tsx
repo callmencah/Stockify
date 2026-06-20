@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -49,7 +49,7 @@ interface InventoryResponse {
   };
 }
 
-export default function InventoryPage() {
+function InventoryContent() {
   const searchParams = useSearchParams();
   const filterQuery = searchParams.get("filter");
 
@@ -309,5 +309,13 @@ export default function InventoryPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function InventoryPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-muted-foreground">Memuat inventori...</div>}>
+      <InventoryContent />
+    </Suspense>
   );
 }

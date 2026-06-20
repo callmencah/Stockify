@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
@@ -56,7 +56,7 @@ interface SOItem {
   item?: Item;
 }
 
-export default function SalesOrdersPage() {
+function SalesOrdersContent() {
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const statusQuery = searchParams.get("status");
@@ -519,5 +519,13 @@ export default function SalesOrdersPage() {
         </DialogContent>
       </Dialog>
     </div>
+  );
+}
+
+export default function SalesOrdersPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-muted-foreground">Memuat sales orders...</div>}>
+      <SalesOrdersContent />
+    </Suspense>
   );
 }
