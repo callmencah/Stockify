@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { formatCurrency, formatNumber, formatDateTime } from "@/lib/utils";
@@ -101,6 +102,7 @@ export default function DashboardPage() {
       icon: Package,
       color: "text-blue-600",
       bg: "bg-blue-50",
+      href: "/items",
     },
     {
       title: "Nilai Stok",
@@ -109,6 +111,7 @@ export default function DashboardPage() {
       icon: TrendingUp,
       color: "text-emerald-600",
       bg: "bg-emerald-50",
+      href: "/inventory",
     },
     {
       title: "Stok Rendah",
@@ -117,6 +120,7 @@ export default function DashboardPage() {
       icon: AlertTriangle,
       color: "text-amber-600",
       bg: "bg-amber-50",
+      href: "/inventory?filter=low",
     },
     {
       title: "Stok Habis",
@@ -125,6 +129,7 @@ export default function DashboardPage() {
       icon: AlertTriangle,
       color: "text-red-600",
       bg: "bg-red-50",
+      href: "/inventory?filter=out",
     },
     {
       title: "PO Pending",
@@ -133,6 +138,7 @@ export default function DashboardPage() {
       icon: TruckIcon,
       color: "text-purple-600",
       bg: "bg-purple-50",
+      href: "/purchase-orders",
     },
     {
       title: "SO Pending",
@@ -141,6 +147,7 @@ export default function DashboardPage() {
       icon: ShoppingCart,
       color: "text-indigo-600",
       bg: "bg-indigo-50",
+      href: "/sales-orders",
     },
     {
       title: "Transaksi Hari Ini",
@@ -149,6 +156,7 @@ export default function DashboardPage() {
       icon: ArrowUpDown,
       color: "text-cyan-600",
       bg: "bg-cyan-50",
+      href: "/reports",
     },
     {
       title: "Lokasi Aktif",
@@ -157,6 +165,7 @@ export default function DashboardPage() {
       icon: Warehouse,
       color: "text-orange-600",
       bg: "bg-orange-50",
+      href: "/locations",
     },
   ];
 
@@ -169,22 +178,32 @@ export default function DashboardPage() {
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {statCards.map((card) => (
-          <Card key={card.title} className="hover:shadow-md transition-shadow">
-            <CardContent className="pt-6">
-              <div className="flex flex-col items-center text-center">
-                <div className={`p-3 rounded-xl w-fit ${card.bg}`}>
-                  <card.icon className={`h-6 w-6 ${card.color}`} />
+        {statCards.map((card) => {
+          const cardContent = (
+            <Card key={card.title} className="hover:shadow-md transition-shadow h-full cursor-pointer hover:border-blue-200">
+              <CardContent className="pt-6">
+                <div className="flex flex-col items-center text-center">
+                  <div className={`p-3 rounded-xl w-fit ${card.bg}`}>
+                    <card.icon className={`h-6 w-6 ${card.color}`} />
+                  </div>
+                  <div className="min-w-0 mt-4 w-full">
+                    <p className="text-sm font-medium text-muted-foreground">{card.title}</p>
+                    <p className="text-lg sm:text-xl md:text-2xl font-bold mt-1 break-all sm:break-words">{card.value}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{card.description}</p>
+                  </div>
                 </div>
-                <div className="min-w-0 mt-4 w-full">
-                  <p className="text-sm font-medium text-muted-foreground">{card.title}</p>
-                  <p className="text-lg sm:text-xl md:text-2xl font-bold mt-1 break-all sm:break-words">{card.value}</p>
-                  <p className="text-xs text-muted-foreground mt-1">{card.description}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          );
+
+          return card.href ? (
+            <Link key={card.title} href={card.href} className="block h-full">
+              {cardContent}
+            </Link>
+          ) : (
+            cardContent
+          );
+        })}
       </div>
 
       {/* Charts row */}

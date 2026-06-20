@@ -12,6 +12,7 @@
     "db:seed": "tsx prisma/seed.ts --items=50",
     "db:seed:10k": "tsx prisma/seed.ts --items=10000",
     "db:seed:100k": "tsx prisma/seed.ts --items=100000",
+    "db:clear": "tsx prisma/clear.ts",
     "db:generate": "prisma generate"
   },
   "dependencies": {

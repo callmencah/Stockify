@@ -62,7 +62,8 @@ export default function PurchaseOrdersPage() {
   const { data: session } = useSession();
   const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const initialStatus = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("status") || "all" : "all";
+  const [statusFilter, setStatusFilter] = useState(initialStatus);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showDetailDialog, setShowDetailDialog] = useState(false);
   const [showReceiveDialog, setShowReceiveDialog] = useState(false);

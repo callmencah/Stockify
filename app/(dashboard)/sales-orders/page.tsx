@@ -58,7 +58,8 @@ interface SOItem {
 export default function SalesOrdersPage() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
+  const initialStatus = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("status") || "all" : "all";
+  const [statusFilter, setStatusFilter] = useState(initialStatus);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showDetailDialog, setShowDetailDialog] = useState(false);
   const [selectedSO, setSelectedSO] = useState<SalesOrder | null>(null);

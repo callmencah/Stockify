@@ -52,7 +52,8 @@ export default function InventoryPage() {
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [locationId, setLocationId] = useState("all");
-  const [filter, setFilter] = useState("all");
+  const initialFilter = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("filter") || "all" : "all";
+  const [filter, setFilter] = useState(initialFilter);
   const [page, setPage] = useState(1);
   const limit = 20;
 
