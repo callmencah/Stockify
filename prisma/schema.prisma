@@ -19,31 +19,31 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  stockTransactions   StockTransaction[]
-  purchaseOrders      PurchaseOrder[]
-  salesOrders         SalesOrder[]
-  stockOpnames        StockOpname[]
-  auditLogs           AuditLog[]
-  notifications       Notification[]
-  stockAdjustments    StockAdjustment[]
+  stockTransactions StockTransaction[]
+  purchaseOrders    PurchaseOrder[]
+  salesOrders       SalesOrder[]
+  stockOpnames      StockOpname[]
+  auditLogs         AuditLog[]
+  notifications     Notification[]
+  stockAdjustments  StockAdjustment[]
 }
 
 model Location {
-  id          String   @id @default(cuid())
-  code        String   @unique
-  name        String
-  address     String?
-  type        String   @default("WAREHOUSE") // WAREHOUSE, STORE, SUPPLIER, CUSTOMER
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(cuid())
+  code      String   @unique
+  name      String
+  address   String?
+  type      String   @default("WAREHOUSE") // WAREHOUSE, STORE, SUPPLIER, CUSTOMER
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  itemLocations       ItemLocation[]
+  itemLocations         ItemLocation[]
   stockTransactionsFrom StockTransaction[] @relation("FromLocation")
   stockTransactionsTo   StockTransaction[] @relation("ToLocation")
-  purchaseOrders      PurchaseOrder[]
-  salesOrders         SalesOrder[]
-  stockOpnames        StockOpname[]
+  purchaseOrders        PurchaseOrder[]
+  salesOrders           SalesOrder[]
+  stockOpnames          StockOpname[]
 }
 
 model Category {
@@ -57,6 +57,8 @@ model Category {
   updatedAt   DateTime   @updatedAt
 
   items Item[]
+
+  @@index([parentId])
 }
 
 model Unit {
@@ -70,34 +72,37 @@ model Unit {
 }
 
 model Item {
-  id            String   @id @default(cuid())
-  sku           String   @unique
-  barcode       String?  @unique
-  name          String
-  description   String?
-  photo         String?
-  buyPrice      Float    @default(0)
-  sellPrice     Float    @default(0)
-  minStock      Int      @default(0)
-  reorderPoint  Int      @default(0)
-  categoryId    String?
-  unitId        String?
-  isActive      Boolean  @default(true)
-  trackSerial   Boolean  @default(false)
-  trackBatch    Boolean  @default(false)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id           String   @id @default(cuid())
+  sku          String   @unique
+  barcode      String?  @unique
+  name         String
+  description  String?
+  photo        String?
+  buyPrice     Float    @default(0)
+  sellPrice    Float    @default(0)
+  minStock     Int      @default(0)
+  reorderPoint Int      @default(0)
+  categoryId   String?
+  unitId       String?
+  isActive     Boolean  @default(true)
+  trackSerial  Boolean  @default(false)
+  trackBatch   Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
-  category          Category?          @relation(fields: [categoryId], references: [id])
-  unit              Unit?              @relation(fields: [unitId], references: [id])
-  itemLocations     ItemLocation[]
-  stockTransactions StockTransaction[]
-  purchaseOrderItems PurchaseOrderItem[]
-  salesOrderItems   SalesOrderItem[]
-  serialNumbers     SerialNumber[]
-  batches           Batch[]
-  stockOpnameItems  StockOpnameItem[]
+  category             Category?             @relation(fields: [categoryId], references: [id])
+  unit                 Unit?                 @relation(fields: [unitId], references: [id])
+  itemLocations        ItemLocation[]
+  stockTransactions    StockTransaction[]
+  purchaseOrderItems   PurchaseOrderItem[]
+  salesOrderItems      SalesOrderItem[]
+  serialNumbers        SerialNumber[]
+  batches              Batch[]
+  stockOpnameItems     StockOpnameItem[]
   stockAdjustmentItems StockAdjustmentItem[]
+
+  @@index([categoryId])
+  @@index([unitId])
 }
 
 model ItemLocation {
@@ -111,6 +116,7 @@ model ItemLocation {
   location Location @relation(fields: [locationId], references: [id])
 
   @@unique([itemId, locationId])
+  @@index([locationId])
 }
 
 model SerialNumber {
@@ -125,6 +131,9 @@ model SerialNumber {
 
   item  Item   @relation(fields: [itemId], references: [id])
   batch Batch? @relation(fields: [batchId], references: [id])
+
+  @@index([itemId])
+  @@index([batchId])
 }
 
 model Batch {
@@ -144,22 +153,27 @@ model Batch {
 }
 
 model StockTransaction {
-  id           String   @id @default(cuid())
-  type         String   // PURCHASE, SALE, TRANSFER_IN, TRANSFER_OUT, ADJUSTMENT, RETURN_IN, RETURN_OUT, OPNAME
-  itemId       String
+  id             String   @id @default(cuid())
+  type           String // PURCHASE, SALE, TRANSFER_IN, TRANSFER_OUT, ADJUSTMENT, RETURN_IN, RETURN_OUT, OPNAME
+  itemId         String
   fromLocationId String?
   toLocationId   String?
-  quantity     Float
-  unitCost     Float?
-  reference    String?  // PO number, SO number, etc.
-  notes        String?
-  userId       String
-  createdAt    DateTime @default(now())
+  quantity       Float
+  unitCost       Float?
+  reference      String? // PO number, SO number, etc.
+  notes          String?
+  userId         String
+  createdAt      DateTime @default(now())
 
   item         Item      @relation(fields: [itemId], references: [id])
   fromLocation Location? @relation("FromLocation", fields: [fromLocationId], references: [id])
   toLocation   Location? @relation("ToLocation", fields: [toLocationId], references: [id])
   user         User      @relation(fields: [userId], references: [id])
+
+  @@index([itemId])
+  @@index([fromLocationId])
+  @@index([toLocationId])
+  @@index([userId])
 }
 
 model Supplier {
@@ -193,22 +207,26 @@ model Customer {
 }
 
 model PurchaseOrder {
-  id          String   @id @default(cuid())
-  number      String   @unique
-  supplierId  String?
-  locationId  String
-  status      String   @default("DRAFT") // DRAFT, SENT, PARTIAL, RECEIVED, CANCELLED
-  orderDate   DateTime @default(now())
+  id           String    @id @default(cuid())
+  number       String    @unique
+  supplierId   String?
+  locationId   String
+  status       String    @default("DRAFT") // DRAFT, SENT, PARTIAL, RECEIVED, CANCELLED
+  orderDate    DateTime  @default(now())
   expectedDate DateTime?
-  notes       String?
-  userId      String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  notes        String?
+  userId       String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 
-  supplier  Supplier?          @relation(fields: [supplierId], references: [id])
-  location  Location           @relation(fields: [locationId], references: [id])
-  user      User               @relation(fields: [userId], references: [id])
-  items     PurchaseOrderItem[]
+  supplier Supplier?           @relation(fields: [supplierId], references: [id])
+  location Location            @relation(fields: [locationId], references: [id])
+  user     User                @relation(fields: [userId], references: [id])
+  items    PurchaseOrderItem[]
+
+  @@index([supplierId])
+  @@index([locationId])
+  @@index([userId])
 }
 
 model PurchaseOrderItem {
@@ -222,6 +240,9 @@ model PurchaseOrderItem {
 
   purchaseOrder PurchaseOrder @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
   item          Item          @relation(fields: [itemId], references: [id])
+
+  @@index([purchaseOrderId])
+  @@index([itemId])
 }
 
 model SalesOrder {
@@ -238,10 +259,14 @@ model SalesOrder {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  customer Customer?       @relation(fields: [customerId], references: [id])
-  location Location        @relation(fields: [locationId], references: [id])
-  user     User            @relation(fields: [userId], references: [id])
+  customer Customer?        @relation(fields: [customerId], references: [id])
+  location Location         @relation(fields: [locationId], references: [id])
+  user     User             @relation(fields: [userId], references: [id])
   items    SalesOrderItem[]
+
+  @@index([customerId])
+  @@index([locationId])
+  @@index([userId])
 }
 
 model SalesOrderItem {
@@ -255,36 +280,45 @@ model SalesOrderItem {
 
   salesOrder SalesOrder @relation(fields: [salesOrderId], references: [id], onDelete: Cascade)
   item       Item       @relation(fields: [itemId], references: [id])
+
+  @@index([salesOrderId])
+  @@index([itemId])
 }
 
 model StockOpname {
-  id         String   @id @default(cuid())
-  number     String   @unique
+  id         String    @id @default(cuid())
+  number     String    @unique
   locationId String
-  status     String   @default("DRAFT") // DRAFT, IN_PROGRESS, COMPLETED, CANCELLED
-  startDate  DateTime @default(now())
+  status     String    @default("DRAFT") // DRAFT, IN_PROGRESS, COMPLETED, CANCELLED
+  startDate  DateTime  @default(now())
   endDate    DateTime?
   notes      String?
   userId     String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 
   location Location          @relation(fields: [locationId], references: [id])
   user     User              @relation(fields: [userId], references: [id])
   items    StockOpnameItem[]
+
+  @@index([locationId])
+  @@index([userId])
 }
 
 model StockOpnameItem {
-  id           String  @id @default(cuid())
+  id            String  @id @default(cuid())
   stockOpnameId String
-  itemId       String
-  systemQty    Float
-  physicalQty  Float?
-  difference   Float?
-  notes        String?
+  itemId        String
+  systemQty     Float
+  physicalQty   Float?
+  difference    Float?
+  notes         String?
 
   stockOpname StockOpname @relation(fields: [stockOpnameId], references: [id], onDelete: Cascade)
   item        Item        @relation(fields: [itemId], references: [id])
+
+  @@index([stockOpnameId])
+  @@index([itemId])
 }
 
 model StockAdjustment {
@@ -300,6 +334,9 @@ model StockAdjustment {
 
   user  User                  @relation(fields: [userId], references: [id])
   items StockAdjustmentItem[]
+
+  @@index([locationId])
+  @@index([userId])
 }
 
 model StockAdjustmentItem {
@@ -307,31 +344,37 @@ model StockAdjustmentItem {
   stockAdjustmentId String
   itemId            String
   locationId        String
-  quantity          Float   // positive = add, negative = remove
+  quantity          Float // positive = add, negative = remove
   notes             String?
 
   stockAdjustment StockAdjustment @relation(fields: [stockAdjustmentId], references: [id], onDelete: Cascade)
   item            Item            @relation(fields: [itemId], references: [id])
+
+  @@index([stockAdjustmentId])
+  @@index([itemId])
+  @@index([locationId])
 }
 
 model AuditLog {
   id        String   @id @default(cuid())
   userId    String
-  action    String   // CREATE, UPDATE, DELETE, LOGIN, LOGOUT
-  entity    String   // Item, PurchaseOrder, etc.
+  action    String // CREATE, UPDATE, DELETE, LOGIN, LOGOUT
+  entity    String // Item, PurchaseOrder, etc.
   entityId  String?
-  oldValue  String?  // JSON string
-  newValue  String?  // JSON string
+  oldValue  String? // JSON string
+  newValue  String? // JSON string
   ipAddress String?
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 model Notification {
   id        String   @id @default(cuid())
   userId    String
-  type      String   // LOW_STOCK, PO_RECEIVED, SO_CONFIRMED, SYSTEM
+  type      String // LOW_STOCK, PO_RECEIVED, SO_CONFIRMED, SYSTEM
   title     String
   message   String
   entityId  String?
@@ -339,4 +382,6 @@ model Notification {
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
